@@ -10,6 +10,8 @@
 
 For a **Turing Smart Screen 3.5-inch or similar** USB display.
 
+These displays are also sold as **“IPS secondary screens”**, including on AliExpress. That listing name alone does not confirm compatibility; check the Revision A requirements below.
+
 [![Windows download](https://img.shields.io/badge/Download-Windows_x64-2563eb?style=for-the-badge)](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
 [![Build](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml/badge.svg)](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml)
 [![Licence](https://img.shields.io/badge/License-GPL_v3-64748b)](LICENSE)

@@ -8,6 +8,8 @@
 
 Para una **Turing Smart Screen de 3,5 pulgadas o una pantalla USB similar**.
 
+También se venden como **“IPS secondary screen” (pantalla secundaria IPS)** en AliExpress y otras tiendas. Ese nombre comercial no garantiza la compatibilidad; comprueba los requisitos del protocolo Revision A indicados más abajo.
+
 [Descargar para Windows](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [Estado de compilación](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
 
 **Traducción a elegir · Texto azul claro · Brillo ajustable · Restauración sin conexión**

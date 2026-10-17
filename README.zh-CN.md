@@ -8,6 +8,8 @@
 
 适用于 **Turing Smart Screen 3.5 英寸或类似的 USB 智能屏幕**。
 
+在 AliExpress 等平台，这类产品也常以 **“IPS secondary screen”（IPS 副屏）** 的名称销售。商品名称不能保证兼容性，请确认下方的 Revision A 协议要求。
+
 [下载 Windows 版](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [构建状态](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
 
 **可选译本 · 浅蓝色文字 · 可调亮度 · 离线恢复**
