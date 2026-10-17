@@ -56,4 +56,10 @@ if __name__ == '__main__':
         else:
             import logging
             logging.exception('Desktop operation failed')
+        if not any(arg in sys.argv for arg in ('--scheduled', '--update', '--preview', '--remove-setup', '--smoke-test')):
+            from PySide6.QtWidgets import QApplication, QMessageBox
+            from desktop.i18n import translator, system_language
+            app = QApplication.instance() or QApplication([])
+            t = translator(system_language())
+            QMessageBox.critical(None, t('Operation failed'), str(exc))
         sys.exit(1)

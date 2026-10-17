@@ -163,3 +163,25 @@ class GuiTests(unittest.TestCase):
             window.tray.hide()
             window.deleteLater()
             self.app.processEvents()
+
+
+@unittest.skipUnless(QT, 'Desktop dependencies not installed')
+class InstallerTests(unittest.TestCase):
+    def test_per_user_install_with_spaces(self):
+        from desktop import install
+        from PySide6.QtWidgets import QMessageBox
+        app = QApplication.instance() or QApplication([])
+        with tempfile.TemporaryDirectory(prefix='Bible installer ') as temp:
+            base = Path(temp)
+            source = base / 'download'
+            source.mkdir()
+            (source / 'BibleSmartDisplay').write_bytes(b'test executable')
+            (source / '_internal').mkdir()
+            (source / '_internal/runtime').write_bytes(b'test runtime')
+            home = base / 'user home'
+            with patch.object(install.Path, 'home', return_value=home), patch.object(install.sys, 'executable', str(source / 'BibleSmartDisplay')), patch.object(QMessageBox, 'question', return_value=QMessageBox.StandardButton.Yes), patch.object(QMessageBox, 'information'), patch.object(install.subprocess, 'Popen') as launch:
+                self.assertEqual(install.install(), 0)
+                target = home / '.local/opt/bibleSmartDisplay'
+                self.assertEqual((target / '_internal/runtime').read_bytes(), b'test runtime')
+                self.assertEqual(launch.call_args.args[0], [str(target / 'BibleSmartDisplay')])
+                self.assertIn('user home', (home / '.local/share/applications/biblesmartdisplay.desktop').read_text())
