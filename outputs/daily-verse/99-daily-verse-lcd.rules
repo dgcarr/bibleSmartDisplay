@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="5722", ATTRS{serial}=="USB35INCHIPSV2", TAG+="systemd", ENV{SYSTEMD_WANTS}+="daily-verse-lcd.service"

@@ -1,0 +1,16 @@
+[Unit]
+Description=Restore cached Bible verse on USB LCD connection
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+User=dgcarr
+SupplementaryGroups=plugdev
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/bin/python3 /home/dgcarr/Documents/Codex/2026-10-17/do-x20/outputs/daily-verse/verse_display.py --cached
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=45
+NoNewPrivileges=true
+ProtectSystem=full

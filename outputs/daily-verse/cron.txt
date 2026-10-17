@@ -1,0 +1,3 @@
+# BEGIN daily-bible-verse-lcd
+0 6 * * * /usr/bin/python3 /home/dgcarr/Documents/Codex/2026-10-17/do-x20/outputs/daily-verse/verse_display.py >/dev/null 2>&1
+# END daily-bible-verse-lcd
