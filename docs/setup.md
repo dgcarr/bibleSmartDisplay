@@ -4,24 +4,21 @@
 
 Display a daily Bible verse on a **Turing Smart Screen 3.5-inch or similar** USB smart display.
 
-BibleSmartDisplay takes the daily passage reference from [Bible League](https://www.bibleleague.org/verse-of-the-day/), retrieves your chosen Bible Gateway translation (default: **CSB**) from Bible Gateway, and displays it in light blue on black. Text automatically fits the 480 × 320 landscape screen. Backlight brightness defaults to 50%.
+BibleSmartDisplay takes the daily passage reference from [Bible League](https://www.bibleleague.org/verse-of-the-day/), retrieves your chosen Bible Gateway translation (default: **CSB**) from Bible Gateway, and displays it in light blue on black. Text automatically fits the selected model’s landscape resolution. Backlight brightness defaults to 50%.
 
 [Windows downloads](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [Builds](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [Report a problem](https://github.com/dgcarr/bibleSmartDisplay/issues)
 
 ## Compatible displays
 
-**“Or similar” means a display using the same 3.5-inch Revision A USB serial protocol.** Brand names, cases, and seller descriptions are not reliable indicators of protocol compatibility.
+See the [current model table](../README.md#choose-your-screen-model) for selectors, resolutions and experimental status. Use `--list-models` to list the same options locally. The default remains the physically tested UsbPCMonitor-compatible 3.5-inch device.
 
-| Hardware | Status in this project |
-| --- | --- |
-| Turing/TURZX 3.5-inch, Revision A protocol, 480 × 320 | Target hardware; tested with a physical screen on Ubuntu |
-| Rebranded 3.5-inch displays using exactly the same protocol | Expected to work; individual variants need testing |
-| XuanFang Revision B, other protocol revisions, larger/round screens | Not implemented by this driver |
-| HDMI monitors or USB video adapters | Not supported by this serial driver |
+Original Turing 3.5-inch units may not answer HELLO. The explicit `--model turing-3.5 --port PORT` mode accepts only an empty response. The default and larger UsbPCMonitor modes require their exact size-specific replies. No mode treats arbitrary replies as valid.
 
-The tested screen reports `UsbMonitor`, serial `USB35INCHIPSV2`, USB VID:PID `1a86:5722`. Automatic detection recognises `USB35INCHIPS` and `USB35INCHIPSV2`; other compatible variants require `--port`. The driver checks the screen's handshake before sending an image. A matching USB vendor ID alone does not prove compatibility.
+XuanFang B and Qiye D use [smartscreen-driver](https://github.com/hchargois/smartscreen-driver), pinned to 0.2.3, extracted from the upstream GPL driver library. They are experimental. Some XuanFang units only support backlight on/off. Qiye does not provide an identity handshake. Experimental modes require an explicit port rather than probing other devices.
 
-Use the upstream [hardware identification guide](https://github.com/mathoudebine/turing-smart-screen-python/wiki/Hardware-revisions) to identify your model. That project's wider hardware support is **not** automatically included here. This project is independent of Turing/TURZX and other display manufacturers.
+AX206 uses a different, direct-USB protocol and remains unsupported. Turing 5-inch Revision C is not the same as UsbPCMonitor 5-inch. Waveshare USB-Monitor, GUITION, Fuldho/SmartMonitor and HDMI displays remain unsupported.
+
+Protocol references: [Revision A](https://github.com/mathoudebine/turing-smart-screen-python/blob/main/library/lcd/lcd_comm_rev_a.py), [hardware identification](https://github.com/mathoudebine/turing-smart-screen-python/wiki/Hardware-revisions).
 
 ## What you need
 
@@ -244,7 +241,7 @@ This is a per-user launch agent; it needs your login session. To remove the sche
 | Automatic detection fails | Run `--list-ports` and specify `--port`; multiple connected screens also require selection. |
 | Access denied or port busy | Close vendor software and other instances; check Linux serial permissions. |
 | Unexpected screen handshake | Verify the port, screen model and protocol. Similar casing does not establish compatibility. |
-| Scrambled or blank image | Confirm Revision A / 3.5-inch / 480 × 320 hardware. Other sizes require driver work. |
+| Scrambled or blank image | Confirm the selected --model, its protocol and resolution against the model table. |
 | Missing cached verse | Run once online without `--cached`; use the same account/data directory for scheduled runs. |
 | Font error | Supply `--font` with a readable TrueType font path. |
 | Fetch/parser error | Check network and `verse.log`. Bible League or Bible Gateway markup may have changed; a parser update may be needed. |

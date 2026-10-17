@@ -8,7 +8,7 @@
 
 Pour un **Turing Smart Screen de 3,5 pouces ou un écran USB similaire**.
 
-Ces appareils sont aussi vendus sous le nom **« IPS secondary screen » (écran secondaire IPS)**, notamment sur AliExpress. Cette appellation ne garantit pas la compatibilité : vérifiez les exigences du protocole Revision A ci-dessous.
+Ces appareils sont aussi vendus sous le nom **« IPS secondary screen » (écran secondaire IPS)**, notamment sur AliExpress. Cette appellation ne garantit pas la compatibilité : consultez le tableau des modèles ci-dessous.
 
 [Télécharger pour Windows](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [État de la compilation](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
 
@@ -16,8 +16,30 @@ Ces appareils sont aussi vendus sous le nom **« IPS secondary screen » (écran
 
 L’application récupère la [référence quotidienne de Bible League](https://www.bibleleague.org/verse-of-the-day/), cherche le passage sur Bible Gateway dans la traduction choisie (**CSB** par défaut), puis l’affiche sur votre écran. La taille du texte s’adapte à l’espace disponible.
 
-> [!IMPORTANT]
-> **Vérifiez votre écran :** l’application prend en charge le protocole série USB **Revision A, 3,5 pouces, 480 × 320 pixels**. Des écrans d’apparence similaire peuvent utiliser des protocoles différents. Les autres tailles, les modèles Revision B et les moniteurs HDMI ne sont pas pris en charge. [Identifier votre écran (en anglais)](docs/setup.md#compatible-displays)
+## Choisir le modèle d’écran
+
+| Option du modèle | Écran | Résolution paysage | État |
+| :--- | :--- | :--- | :--- |
+| `usbpcmonitor-3.5` | UsbPCMonitor / compatible 3.5-inch | 480 × 320 | Testé sous Ubuntu ; par défaut |
+| `turing-3.5` | Original Turing 3.5-inch | 480 × 320 | Expérimental |
+| `usbpcmonitor-5` | UsbPCMonitor 5-inch | 800 × 480 | Expérimental |
+| `usbpcmonitor-7` | UsbPCMonitor 7-inch | 1024 × 600 | Expérimental |
+| `xuanfang-3.5` | XuanFang Revision B / flagship | 480 × 320 | Expérimental |
+| `qiye-3.5` | Kipye / Qiye / 奇叶智显 (Revision D) | 480 × 320 | Expérimental |
+
+Sélectionnez le modèle et le port exacts. **Expérimental** signifie que le protocole est implémenté et testé avec une liaison série simulée, mais pas encore avec le matériel physique dans ce projet.
+
+```powershell
+.\bibleSmartDisplay.exe --list-models
+.\bibleSmartDisplay.exe --model xuanfang-3.5 --port COM3
+.\bibleSmartDisplay.exe --model turing-3.5 --port COM3
+```
+
+Sous Linux/macOS, ajoutez les mêmes options après `.venv/bin/python outputs/daily-verse/verse_display.py`. Les modèles expérimentaux exigent un `--port` explicite. Utilisez `--demo --preview-only` pour vérifier la mise en page sans matériel.
+
+Seul `turing-3.5`, choisi explicitement, accepte une réponse HELLO vide. UsbPCMonitor exige la réponse correspondant à sa taille. Ne choisissez pas Turing original pour contourner une erreur. Certaines révisions XuanFang permettent seulement d’allumer ou d’éteindre le rétroéclairage ; l’éclairage RGB arrière n’est pas configuré. Qiye ne dispose pas d’une vérification d’identité : sélectionnez le bon appareil.
+
+**Non pris en charge :** AX206/AIDA64/USB2LCD, Turing 5 pouces Revision C, écrans ronds, Waveshare USB-Monitor, GUITION, Fuldho/SmartMonitor et HDMI. AX206 nécessite un backend USB direct distinct. UsbPCMonitor 5 pouces et Turing 5 pouces utilisent des protocoles différents.
 
 ## Choisir l’installation
 

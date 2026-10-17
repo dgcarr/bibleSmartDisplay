@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""Bible League daily verse for a Turing Revision A 3.5-inch USB LCD.
+"""Bible League daily verse for supported USB smart displays.
 Protocol reference: https://github.com/mathoudebine/turing-smart-screen-python
-Dependencies: Pillow, pyserial (provided by this machine's Python).
+Dependencies: see requirements.txt.
 """
 import argparse
 import os
@@ -25,6 +25,16 @@ from filelock import FileLock, Timeout
 ROOT = Path(__file__).resolve().parent
 URL = 'https://www.bibleleague.org/verse-of-the-day/'
 WIDTH, HEIGHT = 480, 320
+# Landscape dimensions; only the first model has been physically tested here.
+MODELS = {
+    'usbpcmonitor-3.5': (480, 320, 'A', 1),
+    'turing-3.5': (480, 320, 'A', None),
+    'usbpcmonitor-5': (800, 480, 'A', 2),
+    'usbpcmonitor-7': (1024, 600, 'A', 3),
+    'xuanfang-3.5': (480, 320, 'B', None),
+    'qiye-3.5': (480, 320, 'D', None),
+}
+
 
 
 def default_data_dir():
@@ -176,32 +186,33 @@ def wrap(text, font, draw, width):
         lines.append(line)
     return lines
 
-def render(data, font_path=None, color='#ADD8E6'):
+def render(data, font_path=None, color='#ADD8E6', size=(480, 320)):
+    width, height = size
     font_path = font_path or default_font()
-    image = Image.new('RGB', (WIDTH, HEIGHT), 'black')
+    image = Image.new('RGB', (width, height), 'black')
     draw = ImageDraw.Draw(image)
     for size in range(30, 9, -1):
         font = ImageFont.truetype(font_path, size)
         ref_font = ImageFont.truetype(font_path, max(14, size - 3))
         try:
-            lines = wrap(data['verse'], font, draw, WIDTH - 40)
-            refs = wrap(data['reference'], ref_font, draw, WIDTH - 40)
+            lines = wrap(data['verse'], font, draw, width - 40)
+            refs = wrap(data['reference'], ref_font, draw, width - 40)
         except ValueError:
             continue
         step = size + 6
         ref_step = ref_font.size + 5
         total = len(lines) * step + 18 + len(refs) * ref_step
-        if total <= HEIGHT - 40:
+        if total <= height - 40:
             break
     else:
         raise ValueError('Verse cannot fit on screen without clipping')
-    y = (HEIGHT - total) // 2
+    y = (height - total) // 2
     for line in lines:
-        draw.text((WIDTH // 2, y), line, fill=color, font=font, anchor='mt')
+        draw.text((width // 2, y), line, fill=color, font=font, anchor='mt')
         y += step
     y += 18
     for line in refs:
-        draw.text((WIDTH // 2, y), line, fill=color, font=ref_font, anchor='mt')
+        draw.text((width // 2, y), line, fill=color, font=ref_font, anchor='mt')
         y += ref_step
     return image
 
@@ -210,30 +221,77 @@ def command(code, x=0, y=0, ex=0, ey=0):
                   ((y & 15) << 4) | (ex >> 6),
                   ((ex & 63) << 2) | (ey >> 8), ey & 255, code))
 
-def display(image, device, brightness=50):
+def display(image, device, brightness=50, model='usbpcmonitor-3.5'):
+    width, height, protocol, response_byte = MODELS[model]
+    if image.size != (width, height):
+        raise ValueError(f'Image size does not match {model}')
+    if model != 'usbpcmonitor-3.5':
+        logging.warning('EXPERIMENTAL model %s: not physically tested by this project', model)
+    if protocol != 'A':
+        return display_library(image, device, brightness, protocol)
+
     options = {'exclusive': True} if os.name == 'posix' else {}
     with serial.Serial(device, 115200, timeout=2, write_timeout=15, **options) as port:
         port.reset_input_buffer()
         port.write(bytes([69]) * 6)
         reply = port.read(6)
-        if reply != bytes([1]) * 6:
-            raise RuntimeError(f'Unexpected screen handshake: {reply.hex()}')
+        expected = b'' if response_byte is None else bytes([response_byte]) * 6
+        if reply != expected:
+            raise RuntimeError(f'Handshake does not match {model}: {reply.hex()}. Check --model and --port.')
+        if response_byte is None:
+            logging.warning('No HELLO response, as expected for explicitly selected original Turing; identity is not verified')
         port.write(command(109))
         port.write(command(110, x=round(255 * (100 - brightness) / 100)))
         # Revision A: 100 portrait, 101 reverse portrait, 102 landscape.
-        port.write(command(121) + bytes([102]) + struct.pack('>HH', WIDTH, HEIGHT) + bytes(5))
+        port.write(command(121) + bytes([102]) + struct.pack('>HH', width, height) + bytes(5))
         time.sleep(0.1)
         pixels = bytearray()
         for r, g, b in zip(*[iter(image.tobytes())] * 3):
             pixels.extend(struct.pack('<H', ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3)))
-        port.write(command(197, ex=WIDTH - 1, ey=HEIGHT - 1))
-        for offset in range(0, len(pixels), WIDTH * 8):
-            port.write(pixels[offset:offset + WIDTH * 8])
+        port.write(command(197, ex=width - 1, ey=height - 1))
+        for offset in range(0, len(pixels), width * 8):
+            port.write(pixels[offset:offset + width * 8])
         port.flush()
-        logging.info('Screen handshake confirmed; sent %d image bytes', len(pixels))
+        logging.info('Screen transfer completed; sent %d image bytes', len(pixels))
+
+def display_library(image, device, brightness, protocol):
+    from smartscreen_driver.lcd_comm import Orientation
+    from smartscreen_driver.lcd_comm_rev_b import LcdCommRevB
+    from smartscreen_driver.lcd_comm_rev_d import LcdCommRevD
+    driver_class = LcdCommRevB if protocol == 'B' else LcdCommRevD
+    driver = driver_class(com_port=device, display_width=320, display_height=480)
+    try:
+        driver.lcd_serial.write_timeout = 15
+        # Propagate failed/partial writes instead of the library's timeout warning.
+        def write_checked(data):
+            if driver.lcd_serial.write(data) != len(data):
+                raise serial.SerialTimeoutException('Incomplete screen write')
+        driver.write_line = write_checked
+        if protocol == 'B':
+            original_read = driver.serial_read
+            def read_checked(size):
+                reply = original_read(size)
+                if (len(reply) != 10 or reply[0] != 0xCA or reply[-1] != 0xCA
+                        or reply[1:6] != b'HELLO' or reply[6] != 0x0A
+                        or reply[7] not in (1, 2, 0x11, 0x12)):
+                    raise RuntimeError('Invalid XuanFang handshake; check model and port')
+                return reply
+            driver.serial_read = read_checked
+        driver.initialize_comm()
+        driver.set_orientation(Orientation.LANDSCAPE)
+        driver.screen_on()
+        driver.set_brightness(brightness)
+        driver.paint(image)
+        driver.lcd_serial.flush()
+        logging.info('Experimental %s transfer completed', protocol)
+    finally:
+        driver.close_serial()
+
 
 def main():
-    parser = argparse.ArgumentParser(description='Daily Bible verse for a 3.5-inch Revision A USB smart display.')
+    parser = argparse.ArgumentParser(description='Daily Bible verse for USB smart displays.')
+    parser.add_argument('--model', choices=MODELS, default='usbpcmonitor-3.5', help='Display model; all except usbpcmonitor-3.5 are experimental')
+    parser.add_argument('--list-models', action='store_true', help='List models and testing status, then exit')
     parser.add_argument('--preview-only', action='store_true')
     parser.add_argument('--cached', action='store_true', help='Restore saved verse without a network request')
     parser.add_argument('--demo', action='store_true', help='Render a built-in test message without internet')
@@ -245,12 +303,19 @@ def main():
     parser.add_argument('--brightness', type=int, default=50, choices=range(101), metavar='0-100')
     parser.add_argument('--data-dir', type=Path, default=default_data_dir(), help='Cache, preview and log directory')
     args = parser.parse_args()
+    if args.list_models:
+        for name, (w, h, protocol, _) in MODELS.items():
+            status = 'tested on Ubuntu' if name == 'usbpcmonitor-3.5' else 'EXPERIMENTAL: hardware untested'
+            print(f'{name}: {w}x{h}, protocol {protocol}, {status}')
+        return
     if args.list_ports:
         for port in list_ports.comports():
             print(f'{port.device}: {port.description} [{port.hwid}]')
         return
     color = ImageColor.getrgb(args.color)
     font = args.font or default_font()
+    if not args.preview_only and args.model != 'usbpcmonitor-3.5' and not args.port:
+        parser.error('Experimental models require an explicit --port; use --list-ports.')
     device = None if args.preview_only else (args.port or choose_port())
     root = args.data_dir.expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -284,10 +349,10 @@ def main():
             expected = args.translation or (None if args.cached else 'CSB')
             if expected and data.get('translation') != expected:
                 raise ValueError(f'Cached verse is not {expected}; fetch that translation online first.')
-        image = render(data, font, color)
+        image = render(data, font, color, MODELS[args.model][:2])
         image.save(root / 'preview.png')
         if not args.preview_only:
-            display(image, device, args.brightness)
+            display(image, device, args.brightness, args.model)
         logging.info('Rendered %s; data directory: %s', data['reference'], root)
     finally:
         lock.release()

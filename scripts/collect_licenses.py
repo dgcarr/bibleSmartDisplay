@@ -3,7 +3,7 @@ from importlib.metadata import distribution
 from pathlib import Path
 import shutil
 
-for name in ('Pillow', 'pyserial', 'filelock', 'pyinstaller'):
+for name in ('Pillow', 'pyserial', 'filelock', 'pyinstaller', 'smartscreen-driver', 'numpy'):
     dist = distribution(name)
     target = Path('dist/licenses') / name
     target.mkdir(parents=True, exist_ok=True)

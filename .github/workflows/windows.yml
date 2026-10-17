@@ -26,6 +26,8 @@ jobs:
         run: |
           & ./dist/bibleSmartDisplay.exe --help
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./dist/bibleSmartDisplay.exe --list-models
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & ./dist/bibleSmartDisplay.exe --list-ports
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & ./dist/bibleSmartDisplay.exe --demo --preview-only --data-dir ./build/smoke-test
@@ -63,4 +65,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" release/* --title "$RELEASE_TAG" --notes "Windows x64 portable executable. Extract the ZIP and run Run-display.cmd. See README for USB drivers, supported 3.5-inch Revision A hardware, and Linux/macOS source installation. Windows automated preview tests pass; physical Windows USB testing is still needed."
+        run: gh release create "$RELEASE_TAG" release/* --title "$RELEASE_TAG" --notes "Windows x64 portable executable. Extract the ZIP and run Run-display.cmd. See README for USB drivers, supported models and experimental hardware status, and Linux/macOS source installation. Windows automated preview tests pass; physical Windows USB testing is still needed."

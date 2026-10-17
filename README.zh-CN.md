@@ -8,7 +8,7 @@
 
 适用于 **Turing Smart Screen 3.5 英寸或类似的 USB 智能屏幕**。
 
-在 AliExpress 等平台，这类产品也常以 **“IPS secondary screen”（IPS 副屏）** 的名称销售。商品名称不能保证兼容性，请确认下方的 Revision A 协议要求。
+在 AliExpress 等平台，这类产品也常以 **“IPS secondary screen”（IPS 副屏）** 的名称销售。商品名称不能保证兼容性，请确认下方的型号列表。
 
 [下载 Windows 版](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [构建状态](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
 
@@ -16,8 +16,30 @@
 
 本程序读取 [Bible League 的每日经文出处](https://www.bibleleague.org/verse-of-the-day/)，从 Bible Gateway 获取所选译本的经文（默认 **CSB**），再显示到屏幕上。字号会根据内容自动调整。
 
-> [!IMPORTANT]
-> **请先确认硬件兼容性。** 当前支持 **3.5 英寸、480 × 320、Revision A USB 串口协议**。外观相似并不代表协议相同；不支持其他尺寸、Revision B 或 HDMI 显示器。[硬件识别指南（英文）](docs/setup.md#compatible-displays)
+## 选择屏幕型号
+
+| 型号参数 | 屏幕 | 横屏分辨率 | 状态 |
+| :--- | :--- | :--- | :--- |
+| `usbpcmonitor-3.5` | UsbPCMonitor / compatible 3.5-inch | 480 × 320 | 已在 Ubuntu 实机测试；默认 |
+| `turing-3.5` | Original Turing 3.5-inch | 480 × 320 | 实验性 |
+| `usbpcmonitor-5` | UsbPCMonitor 5-inch | 800 × 480 | 实验性 |
+| `usbpcmonitor-7` | UsbPCMonitor 7-inch | 1024 × 600 | 实验性 |
+| `xuanfang-3.5` | XuanFang Revision B / flagship | 480 × 320 | 实验性 |
+| `qiye-3.5` | Kipye / Qiye / 奇叶智显 (Revision D) | 480 × 320 | 实验性 |
+
+请指定准确型号和串口。**实验性**表示已实现并通过模拟串口测试，但本项目尚未进行对应硬件的实机验证。商品名称不能保证协议兼容。
+
+```powershell
+.\bibleSmartDisplay.exe --list-models
+.\bibleSmartDisplay.exe --model xuanfang-3.5 --port COM3
+.\bibleSmartDisplay.exe --model turing-3.5 --port COM3
+```
+
+Linux/macOS 将相同参数添加到 `.venv/bin/python outputs/daily-verse/verse_display.py` 后面。实验性型号必须显式指定 `--port`。使用 `--demo --preview-only` 可在不连接硬件时预览布局。
+
+仅显式选择 `turing-3.5` 时允许 HELLO 无响应；UsbPCMonitor 必须返回对应尺寸的响应。不要用原版 Turing 选项绕过未知设备错误。部分 XuanFang 版本只支持背光开关；本程序不配置 RGB 背板。Qiye 没有身份握手，必须正确选择设备。
+
+**仍不支持：** AX206/AIDA64/USB2LCD、Turing 5 英寸 Revision C、圆屏、Waveshare USB-Monitor、GUITION、Fuldho/SmartMonitor 和 HDMI 显示器。AX206 需要单独的直接 USB 后端。UsbPCMonitor 5 英寸与 Turing 5 英寸协议不同。
 
 ## 选择安装方式
 
