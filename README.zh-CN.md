@@ -27,8 +27,8 @@
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | 运行安装程序 |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | 打开 DMG，将应用拖入“应用程序” |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | 打开 DMG，将应用拖入“应用程序” |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | 使用软件安装程序打开 |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | 使用软件安装程序打开 |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.4_amd64.deb` | 使用软件安装程序打开 |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.4_arm64.deb` | 使用软件安装程序打开 |
 | 其他 Linux 桌面 | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | 解压并打开可执行文件 |
 
 ## 设置屏幕
@@ -42,6 +42,8 @@
 ## 日常设置
 
 通过托盘或菜单栏图标更改型号、颜色、亮度、译本、字体和界面语言。支持英语、简体中文、西班牙语和法语。每日更新与登录启动各有独立复选框。退出托盘后，登录期间已启用的计划更新仍会运行。
+
+文字采用 **3 倍超采样**，使边缘更平滑，同时保留轻盈的字形风格。所有支持型号的桌面应用、预览和计划更新均使用此渲染方式。
 
 <details>
 <summary>应用截图</summary>

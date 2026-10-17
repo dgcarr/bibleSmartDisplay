@@ -27,9 +27,9 @@ The initial builds are not publisher-signed or Apple-notarized. Platform securit
 For Debian 12+, Ubuntu 24.04+ and 64-bit Raspberry Pi OS Bookworm+, the `.deb` is the simplest installation. Choose `amd64` for Intel/AMD PCs or `arm64` for 64-bit Raspberry Pi/ARM systems. Open the downloaded file with your graphical package installer. If no installer is associated with `.deb` files, use a terminal in the download directory:
 
 ```sh
-sudo apt install ./biblesmartdisplay_0.4.3_amd64.deb
+sudo apt install ./biblesmartdisplay_0.4.4_amd64.deb
 # Raspberry Pi / ARM64 instead:
-sudo apt install ./biblesmartdisplay_0.4.3_arm64.deb
+sudo apt install ./biblesmartdisplay_0.4.4_arm64.deb
 ```
 
 Launch **Bible Smart Display** from the applications menu, or run `biblesmartdisplay`. The package installs under `/opt/biblesmartdisplay` and includes Python and Qt. It installs for all users, but each user's preferences, scheduling and startup choices remain separate. Installation does not automatically enable startup or schedule tasks.
@@ -56,6 +56,10 @@ The package does not modify other users' sessions or delete personal settings, c
 If Linux reports permission denied, **Fix Linux USB access** opens a graphical administrator-authentication prompt. It grants access to the selected port; when USB VID/PID/serial identity is available it also installs a device-specific `uaccess` rule for future connections. Without a stable identity, access is temporary. The app never requests a password itself. If `pkexec` or `setfacl` is unavailable, the error provides a terminal fallback; install the distro's `policykit-1`/`polkit` and `acl` packages as appropriate.
 
 Windows and macOS normally provide USB CDC serial support. Devices using other USB bridges may require a manufacturer driver: see [USB driver guidance](../README.md#usb-drivers). The app does not silently install third-party drivers.
+
+## Text rendering
+
+All display paths use 3× supersampling: layout is calculated at the selected screen’s native resolution, text is drawn at three times that resolution, then reduced once with Lanczos filtering. The default remains light lettering; no bold stroke or sharpening is added. Colour, brightness, line wrapping and nominal font sizes are preserved. Final images retain the model’s exact native dimensions before USB transfer.
 
 ## Everyday use
 

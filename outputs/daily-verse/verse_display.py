@@ -187,6 +187,7 @@ def wrap(text, font, draw, width):
     return lines
 
 def render(data, font_path=None, color='#ADD8E6', size=(480, 320)):
+    """Fit at native resolution, then supersample glyphs without changing layout."""
     width, height = size
     font_path = font_path or default_font()
     image = Image.new('RGB', (width, height), 'black')
@@ -206,15 +207,22 @@ def render(data, font_path=None, color='#ADD8E6', size=(480, 320)):
             break
     else:
         raise ValueError('Verse cannot fit on screen without clipping')
+    # Keep the same native-size wrapping, spacing and light font weight. Drawing
+    # at 3x and reducing once smooths edges on low-resolution RGB565 screens.
+    scale = 3
+    image = Image.new('RGB', (width * scale, height * scale), 'black')
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(font_path, size * scale)
+    ref_font = ImageFont.truetype(font_path, max(14, size - 3) * scale)
     y = (height - total) // 2
     for line in lines:
-        draw.text((width // 2, y), line, fill=color, font=font, anchor='mt')
+        draw.text((width // 2 * scale, y * scale), line, fill=color, font=font, anchor='mt')
         y += step
     y += 18
     for line in refs:
-        draw.text((width // 2, y), line, fill=color, font=ref_font, anchor='mt')
+        draw.text((width // 2 * scale, y * scale), line, fill=color, font=ref_font, anchor='mt')
         y += ref_step
-    return image
+    return image.resize((width, height), Image.Resampling.LANCZOS)
 
 def command(code, x=0, y=0, ex=0, ey=0):
     return bytes((x >> 2, ((x & 3) << 6) | (y >> 4),

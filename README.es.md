@@ -27,8 +27,8 @@ La aplicación obtiene la [referencia diaria de Bible League](https://www.biblel
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Ejecuta el instalador |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Abre el DMG y arrastra la app a Aplicaciones |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Abre el DMG y arrastra la app a Aplicaciones |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | Abre con el instalador de software |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | Abre con el instalador de software |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.4_amd64.deb` | Abre con el instalador de software |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.4_arm64.deb` | Abre con el instalador de software |
 | Otros escritorios Linux | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extrae y abre el ejecutable |
 
 ## Configura la pantalla
@@ -42,6 +42,8 @@ La aplicación obtiene la [referencia diaria de Bible League](https://www.biblel
 ## Ajustes cotidianos
 
 Usa el icono de la bandeja o barra de menús para cambiar modelo, color, brillo, traducción, fuente o idioma. Incluye inglés, chino simplificado, español y francés. La programación diaria y el inicio al iniciar sesión tienen casillas independientes. Al salir de la app, las actualizaciones programadas siguen funcionando durante tu sesión.
+
+El texto usa **supermuestreo 3×** para suavizar los bordes manteniendo el estilo de letra ligero. Se aplica a la aplicación, las vistas previas y las actualizaciones programadas de todos los modelos compatibles.
 
 <details>
 <summary>Captura de la aplicación</summary>

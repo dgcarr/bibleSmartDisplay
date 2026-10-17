@@ -27,8 +27,8 @@ L’application récupère la [référence quotidienne de Bible League](https://
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Lancez l’installateur |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Ouvrez le DMG et glissez l’app dans Applications |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Ouvrez le DMG et glissez l’app dans Applications |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | Ouvrez avec l’installateur de logiciels |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | Ouvrez avec l’installateur de logiciels |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.4_amd64.deb` | Ouvrez avec l’installateur de logiciels |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.4_arm64.deb` | Ouvrez avec l’installateur de logiciels |
 | Autres bureaux Linux | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extrayez et ouvrez l’exécutable |
 
 ## Configurer l’écran
@@ -42,6 +42,8 @@ L’application récupère la [référence quotidienne de Bible League](https://
 ## Réglages quotidiens
 
 L’icône de la zone de notification ou de la barre des menus permet de changer modèle, couleur, luminosité, traduction, police et langue. Anglais, chinois simplifié, espagnol et français sont inclus. La programmation quotidienne et le démarrage à la connexion disposent de cases séparées. Quitter l’app laisse les mises à jour programmées actives pendant votre session.
+
+Le texte utilise un **suréchantillonnage 3×** pour lisser les contours tout en conservant des caractères fins. Il s’applique à l’application, aux aperçus et aux mises à jour programmées sur tous les modèles compatibles.
 
 <details>
 <summary>Capture de l’application</summary>
