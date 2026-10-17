@@ -1,6 +1,7 @@
 """Graphical Linux per-user installation; no shell interpolation."""
 import shutil
 import subprocess
+from .system import host_environment
 import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMessageBox
@@ -38,5 +39,5 @@ def install():
     exe = str(target / 'BibleSmartDisplay').replace('\\', '\\\\').replace('"', '\\"').replace('`', '\\`').replace('$', '\\$').replace('%', '%%')
     (applications / 'biblesmartdisplay.desktop').write_text('[Desktop Entry]\nType=Application\nName=Bible Smart Display\nExec="' + exe + '"\nIcon=video-display\nTerminal=false\nCategories=Utility;\n')
     QMessageBox.information(None, title, complete)
-    subprocess.Popen([str(target / 'BibleSmartDisplay')], start_new_session=True)
+    subprocess.Popen([str(target / 'BibleSmartDisplay')], start_new_session=True, env=host_environment())
     return 0

@@ -32,8 +32,8 @@ These displays are also sold as **“IPS secondary screens”**, including on Al
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Run the installer |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Open the DMG; drag the app to Applications |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Open the DMG; drag the app to Applications |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | Open with your software installer |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | Open with your software installer |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | Open with your software installer |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | Open with your software installer |
 | Other Linux desktops | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extract and open the executable |
 
 ## Set up your screen

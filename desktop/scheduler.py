@@ -2,6 +2,7 @@
 import os
 import plistlib
 import subprocess
+from .system import host_environment
 import sys
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -15,7 +16,7 @@ def command(root, mode):
 
 
 def call(args):
-    subprocess.run(args, check=True, capture_output=True, text=True)
+    subprocess.run(args, check=True, capture_output=True, text=True, env=host_environment())
 
 
 def unit_quote(s):
@@ -28,10 +29,10 @@ def configure(root, data):
         for suffix, enabled, mode in [('Daily', data['scheduled'], '--scheduled'), ('Tray', data['startup'], '--tray')]:
             name = NAME + suffix
             if not enabled:
-                subprocess.run(['schtasks', '/Delete', '/TN', name, '/F'], capture_output=True)
+                subprocess.run(['schtasks', '/Delete', '/TN', name, '/F'], capture_output=True, env=host_environment())
                 continue
             import getpass
-            user = subprocess.check_output(['whoami'], text=True).strip()
+            user = subprocess.check_output(['whoami'], text=True, env=host_environment()).strip()
             exe, *args = command(root, mode)
             trigger = '<LogonTrigger><Enabled>true</Enabled></LogonTrigger>'
             if suffix == 'Daily':
@@ -46,7 +47,7 @@ def configure(root, data):
         for suffix, enabled, mode in [('daily', data['scheduled'], '--scheduled'), ('tray', data['startup'], '--tray')]:
             label = 'org.biblesmartdisplay.' + suffix
             path = folder / (label + '.plist')
-            subprocess.run(['launchctl', 'bootout', f'gui/{os.getuid()}', str(path)], capture_output=True)
+            subprocess.run(['launchctl', 'bootout', f'gui/{os.getuid()}', str(path)], capture_output=True, env=host_environment())
             if enabled:
                 payload = dict(Label=label, ProgramArguments=command(root, mode), RunAtLoad=True)
                 if suffix == 'daily':
@@ -66,7 +67,7 @@ def configure(root, data):
             call(['systemctl', '--user', 'daemon-reload'])
             call(['systemctl', '--user', 'enable', '--now', unit + '.timer'])
         else:
-            subprocess.run(['systemctl', '--user', 'disable', '--now', unit + '.timer'], capture_output=True)
+            subprocess.run(['systemctl', '--user', 'disable', '--now', unit + '.timer'], capture_output=True, env=host_environment())
             for ext in ('.service', '.timer'):
                 (folder / (unit + ext)).unlink(missing_ok=True)
             call(['systemctl', '--user', 'daemon-reload'])
@@ -82,9 +83,9 @@ def configure(root, data):
 
 def legacy_jobs():
     if sys.platform.startswith('linux'):
-        p = subprocess.run(['crontab', '-l'], capture_output=True, text=True)
+        p = subprocess.run(['crontab', '-l'], capture_output=True, text=True, env=host_environment())
         return '\n'.join(x for x in p.stdout.splitlines() if 'verse_display' in x or 'bibleSmartDisplay' in x)
     if sys.platform == 'darwin':
         return '\n'.join(str(p) for p in (Path.home() / 'Library/LaunchAgents').glob('*bible*') if not p.name.startswith('org.biblesmartdisplay.'))
-    p = subprocess.run(['schtasks', '/Query', '/FO', 'CSV'], capture_output=True, text=True)
+    p = subprocess.run(['schtasks', '/Query', '/FO', 'CSV'], capture_output=True, text=True, env=host_environment())
     return '\n'.join(x for x in p.stdout.splitlines() if ('verse' in x.lower() or 'bible' in x.lower()) and NAME not in x)

@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+from .system import host_environment
 import tempfile
 
 
@@ -22,6 +23,6 @@ def repair(data, port):
             source.write_text(rule)
             # All variable values are positional arguments, never shell source.
             script = 'install -m 0644 -- "$1" "$2" && udevadm control --reload-rules && "$3" -m "$4" -- "$5"'
-            subprocess.run(['pkexec', '/bin/sh', '-c', script, 'bible-usb-setup', str(source), f'/etc/udev/rules.d/70-biblesmartdisplay-{os.getuid()}.rules', acl, f'u:{os.getuid()}:rw', str(port)], check=True)
+            subprocess.run(['pkexec', '/bin/sh', '-c', script, 'bible-usb-setup', str(source), f'/etc/udev/rules.d/70-biblesmartdisplay-{os.getuid()}.rules', acl, f'u:{os.getuid()}:rw', str(port)], check=True, env=host_environment())
     else:
-        subprocess.run(['pkexec', acl, '-m', f'u:{os.getuid()}:rw', str(port)], check=True)
+        subprocess.run(['pkexec', acl, '-m', f'u:{os.getuid()}:rw', str(port)], check=True, env=host_environment())

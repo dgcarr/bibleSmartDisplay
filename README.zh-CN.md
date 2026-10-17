@@ -27,8 +27,8 @@
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | 运行安装程序 |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | 打开 DMG，将应用拖入“应用程序” |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | 打开 DMG，将应用拖入“应用程序” |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | 使用软件安装程序打开 |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | 使用软件安装程序打开 |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | 使用软件安装程序打开 |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | 使用软件安装程序打开 |
 | 其他 Linux 桌面 | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | 解压并打开可执行文件 |
 
 ## 设置屏幕

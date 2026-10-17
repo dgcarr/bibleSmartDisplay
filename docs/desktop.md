@@ -27,9 +27,9 @@ The initial builds are not publisher-signed or Apple-notarized. Platform securit
 For Debian 12+, Ubuntu 24.04+ and 64-bit Raspberry Pi OS Bookworm+, the `.deb` is the simplest installation. Choose `amd64` for Intel/AMD PCs or `arm64` for 64-bit Raspberry Pi/ARM systems. Open the downloaded file with your graphical package installer. If no installer is associated with `.deb` files, use a terminal in the download directory:
 
 ```sh
-sudo apt install ./biblesmartdisplay_0.4.2_amd64.deb
+sudo apt install ./biblesmartdisplay_0.4.3_amd64.deb
 # Raspberry Pi / ARM64 instead:
-sudo apt install ./biblesmartdisplay_0.4.2_arm64.deb
+sudo apt install ./biblesmartdisplay_0.4.3_arm64.deb
 ```
 
 Launch **Bible Smart Display** from the applications menu, or run `biblesmartdisplay`. The package installs under `/opt/biblesmartdisplay` and includes Python and Qt. It installs for all users, but each user's preferences, scheduling and startup choices remain separate. Installation does not automatically enable startup or schedule tasks.

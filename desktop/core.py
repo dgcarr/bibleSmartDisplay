@@ -5,6 +5,7 @@ import os
 import sys
 import time
 from pathlib import Path
+from .system import host_environment
 from PIL import ImageColor
 from filelock import FileLock
 
@@ -121,8 +122,10 @@ def scheduled(root):
         return
     if sys.platform.startswith('linux'):
         import subprocess
-        status = subprocess.run(['loginctl', 'show-user', str(os.getuid()), '-p', 'State', '--value'], capture_output=True, text=True)
-        if status.returncode != 0 or status.stdout.strip() not in ('active', 'online'):
+        status = subprocess.run(['loginctl', 'show-user', str(os.getuid()), '-p', 'State', '--value'], capture_output=True, text=True, env=host_environment())
+        if status.returncode != 0:
+            raise RuntimeError('Cannot check login session: ' + status.stderr.strip())
+        if status.stdout.strip() not in ('active', 'online'):
             return
     with FileLock(str(root / 'scheduler.lock'), timeout=0):
         data = load(root)

@@ -27,8 +27,8 @@ La aplicación obtiene la [referencia diaria de Bible League](https://www.biblel
 | Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Ejecuta el instalador |
 | macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Abre el DMG y arrastra la app a Aplicaciones |
 | macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Abre el DMG y arrastra la app a Aplicaciones |
-| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | Abre con el instalador de software |
-| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | Abre con el instalador de software |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.3_amd64.deb` | Abre con el instalador de software |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.3_arm64.deb` | Abre con el instalador de software |
 | Otros escritorios Linux | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extrae y abre el ejecutable |
 
 ## Configura la pantalla
