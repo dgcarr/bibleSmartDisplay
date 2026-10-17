@@ -33,7 +33,7 @@ def main():
         from desktop.install import install
         return install()
     else:
-        if sys.platform.startswith('linux') and getattr(sys, 'frozen', False) and not args.smoke_test and not args.tray and Path(sys.executable).resolve().parent != Path.home() / '.local/opt/bibleSmartDisplay':
+        if sys.platform.startswith('linux') and getattr(sys, 'frozen', False) and not args.smoke_test and not args.tray and Path(sys.executable).resolve().parent not in (Path.home() / '.local/opt/bibleSmartDisplay', Path('/opt/biblesmartdisplay')):
             from desktop.install import install
             return install()
         from filelock import FileLock, Timeout

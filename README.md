@@ -24,6 +24,13 @@ These displays are also sold as **“IPS secondary screens”**, including on Al
 
 ---
 
+### Debian / Ubuntu / Raspberry Pi OS packages
+
+Download `biblesmartdisplay_0.4.1_amd64.deb` for Intel/AMD PCs or `biblesmartdisplay_0.4.1_arm64.deb` for 64-bit Raspberry Pi and ARM computers from [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Open it with your software installer, then launch **Bible Smart Display** from the applications menu. Dependencies are installed by the package manager; Python is bundled.
+
+Before uninstalling, select **Remove automatic setup** in Settings and quit the app. Removing the package preserves your preferences and saved verse. [Install/remove commands and supported systems](docs/desktop.md#debian-packages).
+
+
 ## Desktop app — guided setup and tray controls
 
 **English · 简体中文 · Español · Français** — choose the app language in Settings. The desktop app includes model/USB selection, colour and brightness controls, Bible translation, an offline preview, and automatic daily updates. No Python required for packaged downloads.

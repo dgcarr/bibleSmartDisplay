@@ -1,7 +1,7 @@
 [Setup]
 AppId=BibleSmartDisplay
 AppName=Bible Smart Display
-AppVersion=0.4.0
+AppVersion=0.4.1
 DefaultDirName={localappdata}\Programs\BibleSmartDisplay
 DefaultGroupName=Bible Smart Display
 PrivilegesRequired=lowest

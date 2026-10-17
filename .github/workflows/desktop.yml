@@ -39,6 +39,14 @@ jobs:
             QT_QPA_PLATFORM=offscreen /tmp/build-env/bin/python -m unittest discover -s tests -v
             /tmp/build-env/bin/python scripts/build_desktop.py
             QT_QPA_PLATFORM=offscreen /tmp/build-env/bin/python scripts/smoke_desktop.py
+            /tmp/build-env/bin/python scripts/build_deb.py
+            apt-get install -y --no-install-recommends ./artifacts/*.deb
+            QT_QPA_PLATFORM=offscreen biblesmartdisplay --preview --data-dir /tmp/deb-preview
+            QT_QPA_PLATFORM=offscreen biblesmartdisplay --smoke-test --data-dir /tmp/deb-preview
+            test -f /usr/share/applications/biblesmartdisplay.desktop
+            apt-get remove -y biblesmartdisplay
+            test ! -e /opt/biblesmartdisplay/BibleSmartDisplay
+            test ! -e /usr/share/applications/biblesmartdisplay.desktop
           '
       - name: Install build dependencies
         if: runner.os != 'Linux'

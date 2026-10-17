@@ -22,6 +22,28 @@ Linux targets Debian 12+, Ubuntu 24.04+ and 64-bit Raspberry Pi OS Bookworm+. A 
 
 The initial builds are not publisher-signed or Apple-notarized. Platform security may warn or block launch; use your organization's normal trust policy. Checksums detect download corruption, but do not replace publisher signing. Hardware testing is currently Ubuntu with UsbPCMonitor 3.5-inch only; the other model/platform combinations remain experimental or hardware-untested.
 
+## Debian packages
+
+For Debian 12+, Ubuntu 24.04+ and 64-bit Raspberry Pi OS Bookworm+, the `.deb` is the simplest installation. Choose `amd64` for Intel/AMD PCs or `arm64` for 64-bit Raspberry Pi/ARM systems. Open the downloaded file with your graphical package installer. If no installer is associated with `.deb` files, use a terminal in the download directory:
+
+```sh
+sudo apt install ./biblesmartdisplay_0.4.1_amd64.deb
+# Raspberry Pi / ARM64 instead:
+sudo apt install ./biblesmartdisplay_0.4.1_arm64.deb
+```
+
+Launch **Bible Smart Display** from the applications menu, or run `biblesmartdisplay`. The package installs under `/opt/biblesmartdisplay` and includes Python and Qt. It installs for all users, but each user's preferences, scheduling and startup choices remain separate. Installation does not automatically enable startup or schedule tasks.
+
+If replacing a portable installation, first remove its automatic setup and quit it, then open the packaged app and save your scheduling choices again. Existing default preferences remain available; old shortcuts to the portable copy should be removed manually.
+
+Before removing the package, choose **Remove automatic setup** in Settings and quit, or run `biblesmartdisplay --remove-setup` as your normal desktop user. Then remove it through your software manager or:
+
+```sh
+sudo apt remove biblesmartdisplay
+```
+
+The package does not modify other users' sessions or delete personal settings, caches, or previously configured USB access rules. Each user who enabled scheduling should remove their automatic setup before uninstalling. Upgrades preserve settings and keep the executable path stable. No administrator prompt is needed for everyday use; USB permission repair may still require authentication.
+
 ## Set up your screen
 
 1. Connect a USB **data** cable and close the vendor's display software.

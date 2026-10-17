@@ -188,6 +188,13 @@ Indiquez votre système d’exploitation, le modèle de l’écran, ses identifi
 
 ---
 
+### Paquets Debian / Ubuntu / Raspberry Pi OS
+
+Téléchargez `biblesmartdisplay_0.4.1_amd64.deb` pour les PC Intel/AMD ou `biblesmartdisplay_0.4.1_arm64.deb` pour Raspberry Pi et les ordinateurs ARM 64 bits depuis [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Ouvrez le fichier avec votre installateur de logiciels, puis lancez **Bible Smart Display** depuis le menu des applications. Le gestionnaire installe les dépendances ; Python est inclus.
+
+Avant de désinstaller, choisissez **Supprimer la configuration automatique** et quittez l’application. Les préférences et le verset enregistré sont conservés. [Commandes d’installation et de suppression, en anglais](docs/desktop.md#debian-packages).
+
+
 ## Application de bureau : assistant et barre des menus
 
 **English · 简体中文 · Español · Français** — choisissez la langue dans Réglages. L’application propose le choix du modèle et du port USB, la couleur, la luminosité, la traduction biblique, un aperçu hors ligne et les mises à jour quotidiennes. Les paquets incluent Python.
