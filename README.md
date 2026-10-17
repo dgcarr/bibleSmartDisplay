@@ -1,3 +1,5 @@
+[English](README.md) · [简体中文](README.zh-CN.md) · [Español](README.es.md) · [Français](README.fr.md)
+
 <div align="center">
 
 <img src="docs/assets/banner-v2.svg" alt="Bible Smart Display — A daily verse. A quiet moment." width="100%">

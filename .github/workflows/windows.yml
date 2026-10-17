@@ -36,7 +36,7 @@ jobs:
       - name: Package download
         shell: pwsh
         run: |
-          Copy-Item README.md, LICENSE, COPYING dist/
+          Copy-Item README*.md, LICENSE, COPYING dist/
           Copy-Item docs dist/docs -Recurse
           Set-Content dist/Run-display.cmd '@echo off', 'cd /d "%~dp0"', 'bibleSmartDisplay.exe', 'pause'
           Compress-Archive -Path dist/* -DestinationPath bibleSmartDisplay-windows-x64.zip
