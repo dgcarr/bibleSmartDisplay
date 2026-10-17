@@ -1,6 +1,8 @@
 <div align="center">
 
-# 📖 Bible Smart Display
+<img src="docs/assets/banner.svg" alt="Bible Smart Display — A daily verse. A quiet moment." width="100%">
+
+# Bible Smart Display
 
 **A daily Bible verse for your desk.**
 
@@ -10,7 +12,7 @@ For a **Turing Smart Screen 3.5-inch or similar** USB display.
 [![Build](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml/badge.svg)](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml)
 [![Licence](https://img.shields.io/badge/License-GPL_v3-64748b)](LICENSE)
 
-**CSB translation · Light blue text · Adjustable brightness · Offline restore**
+**Choose your translation · Light blue text · Adjustable brightness · Offline restore**
 
 [Windows](#windows) · [Linux](#linux) · [macOS](#macos) · [Drivers](#usb-drivers) · [Help](#need-help)
 
@@ -18,7 +20,7 @@ For a **Turing Smart Screen 3.5-inch or similar** USB display.
 
 ---
 
-Bible Smart Display takes [Bible League’s daily reference](https://www.bibleleague.org/verse-of-the-day/), gets the **Christian Standard Bible (CSB)** wording from Bible Gateway, and puts it on your screen. Text automatically fits the display.
+Bible Smart Display takes [Bible League’s daily reference](https://www.bibleleague.org/verse-of-the-day/), gets your chosen translation from Bible Gateway (default: **CSB**), and puts it on your screen. Text automatically fits the display.
 
 > [!IMPORTANT]
 > **Check your screen first:** this app supports the **3.5-inch, 480 × 320, Revision A USB serial protocol**. Similar-looking displays may use a different protocol. Larger screens, Revision B models and HDMI monitors are not supported. [Identify your display →](docs/setup.md#compatible-displays)
@@ -130,6 +132,26 @@ If automatic detection fails, run with `--list-ports`, then `--port /dev/cu.usbm
 | **Linux** | Compatible devices normally use the kernel’s existing serial drivers |
 
 WCH drivers are **not universal screen drivers**. On Windows, check **Device Manager → Ports (COM & LPT)**. If the device has a warning icon, inspect **Properties → Details → Hardware Ids** and match the driver to that hardware. [Full driver guidance →](docs/setup.md#windows-usb-drivers)
+
+## Choose a translation
+
+Use `--translation` with a [Bible Gateway version code](https://www.biblegateway.com/versions/):
+
+```powershell
+.\bibleSmartDisplay.exe --translation NIV
+.\bibleSmartDisplay.exe --translation KJV
+.\bibleSmartDisplay.exe --translation RVR1960
+```
+
+On Linux/macOS:
+
+```sh
+.venv/bin/python outputs/daily-verse/verse_display.py --translation NIV
+```
+
+CSB remains the default. Any single Bible Gateway text-version code can be requested; the passage must be available in that version. PDF/audio-only editions are not supported. Non-English text may need `--font` with a font covering that language; complex scripts and long unspaced passages are not fully tested.
+
+Add the option to your scheduled task or edit the executable line in `Run-display.cmd` to keep using your choice. `--cached` restores the last saved translation; add `--translation NIV` to require that exact version. A failed lookup never silently replaces your requested translation with a different one. The cache still keeps only one passage.
 
 ## Make it yours
 

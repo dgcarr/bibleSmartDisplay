@@ -4,7 +4,7 @@
 
 Display a daily Bible verse on a **Turing Smart Screen 3.5-inch or similar** USB smart display.
 
-BibleSmartDisplay takes the daily passage reference from [Bible League](https://www.bibleleague.org/verse-of-the-day/), retrieves the **Christian Standard Bible (CSB)** wording from Bible Gateway, and displays it in light blue on black. Text automatically fits the 480 × 320 landscape screen. Backlight brightness defaults to 50%.
+BibleSmartDisplay takes the daily passage reference from [Bible League](https://www.bibleleague.org/verse-of-the-day/), retrieves your chosen Bible Gateway translation (default: **CSB**) from Bible Gateway, and displays it in light blue on black. Text automatically fits the 480 × 320 landscape screen. Backlight brightness defaults to 50%.
 
 [Windows downloads](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [Builds](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [Report a problem](https://github.com/dgcarr/bibleSmartDisplay/issues)
 
@@ -123,6 +123,26 @@ Use the actual `/dev/cu.*` device shown by `--list-ports`; the example name is a
 **Mac drivers:** try the device first; if a usable serial port appears, a separate driver may be unnecessary. For a variant confirmed to use a supported WCH USB-to-serial chip, use [WCH's official macOS driver repository and installation instructions](https://github.com/WCHSoftGroup/ch34xser_macos). Follow its macOS-version-specific instructions. This driver is not required for every screen and is not a substitute for protocol compatibility. For other controllers, use the manufacturer's driver for the exact device.
 
 If Python reports certificate verification failures after a python.org installation, run the supplied **Install Certificates.command** in its Applications folder; do not disable HTTPS verification.
+
+## Choose a translation
+
+Use `--translation` with a [Bible Gateway version code](https://www.biblegateway.com/versions/):
+
+```powershell
+.\bibleSmartDisplay.exe --translation NIV
+.\bibleSmartDisplay.exe --translation KJV
+.\bibleSmartDisplay.exe --translation RVR1960
+```
+
+On Linux/macOS:
+
+```sh
+.venv/bin/python outputs/daily-verse/verse_display.py --translation NIV
+```
+
+CSB remains the default. Any single Bible Gateway text-version code can be requested; the passage must be available in that version. PDF/audio-only editions are not supported. Non-English text may need `--font` with a font covering that language; complex scripts and long unspaced passages are not fully tested.
+
+Add the option to your scheduled task or edit the executable line in `Run-display.cmd` to keep using your choice. `--cached` restores the last saved translation; add `--translation NIV` to require that exact version. A failed lookup never silently replaces your requested translation with a different one. The cache still keeps only one passage.
 
 ## Commands and settings
 

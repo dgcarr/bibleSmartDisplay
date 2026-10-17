@@ -84,10 +84,11 @@ def parse_page(html):
         raise ValueError('Unexpected verse or reference')
     return {'verse': verse, 'reference': reference}
 
-class CSBParser(HTMLParser):
+class PassageParser(HTMLParser):
     """Read verse spans only; omit verse numbers, footnotes and cross-references."""
-    def __init__(self):
+    def __init__(self, version):
         super().__init__()
+        self.version = version
         self.version_depth = 0
         self.span_depth = 0
         self.sup_depth = 0
@@ -99,14 +100,14 @@ class CSBParser(HTMLParser):
         if tag == 'div':
             if self.version_depth:
                 self.version_depth += 1
-            elif 'version-CSB' in attrs.get('class', '').split():
+            elif ('version-' + self.version) in attrs.get('class', '').split():
                 self.version_depth = 1
         if tag == 'span':
             if self.span_depth:
                 self.span_depth += 1
             elif self.version_depth and 'text' in attrs.get('class', '').split():
                 self.span_depth = 1
-                if attrs.get('id', '').startswith('en-CSB-'):
+                if re.match(r'^[a-z]+-' + re.escape(self.version) + r'-[0-9]+$', attrs.get('id', ''), re.I):
                     self.verse_ids.add(attrs['id'])
         if tag == 'sup' and self.span_depth:
             self.sup_depth += 1
@@ -134,21 +135,28 @@ def download(url):
         return response.read(2_000_000).decode('utf-8')
 
 
-def fetch():
+def version_code(value):
+    value = value.strip().upper()
+    if not re.fullmatch(r'[A-Z0-9][A-Z0-9-]{0,39}', value):
+        raise argparse.ArgumentTypeError('Use one Bible Gateway version code, such as NIV or RVR1960.')
+    return value
+
+
+def fetch(version='CSB'):
     selection = parse_page(download(URL))
     # Remove the source translation suffix, keeping the book/chapter/verse range.
     reference = re.sub(r'\s+[A-Z][A-Z0-9]{1,9}\s*$', '', selection['reference']).strip()
     if reference == selection['reference']:
         raise ValueError('Unrecognised translation suffix in source reference')
-    csb_url = 'https://www.biblegateway.com/passage/?' + urlencode({'search': reference, 'version': 'CSB'})
-    parser = CSBParser()
+    csb_url = 'https://www.biblegateway.com/passage/?' + urlencode({'search': reference, 'version': version})
+    parser = PassageParser(version)
     parser.feed(download(csb_url))
     verse = ' '.join(''.join(parser.parts).split())
     if not parser.verse_ids or not 10 < len(verse) < 4000:
-        raise ValueError('CSB passage missing or unexpected; keeping previous verse')
-    return {'verse': verse, 'reference': reference + ' CSB',
-            'translation': 'CSB', 'source': csb_url,
-            'copyright': 'Christian Standard Bible. Copyright © 2017 by Holman Bible Publishers.'}
+        raise ValueError(f'{version} passage unavailable or unexpected; no other translation substituted')
+    return {'verse': verse, 'reference': reference + ' ' + version,
+            'translation': version, 'source': csb_url,
+            'copyright': 'See the source passage on Bible Gateway for translation-specific copyright and permissions.'}
 
 
 def wrap(text, font, draw, width):
@@ -225,12 +233,13 @@ def display(image, device, brightness=50):
         logging.info('Screen handshake confirmed; sent %d image bytes', len(pixels))
 
 def main():
-    parser = argparse.ArgumentParser(description='Daily CSB verse for a 3.5-inch Revision A USB smart display.')
+    parser = argparse.ArgumentParser(description='Daily Bible verse for a 3.5-inch Revision A USB smart display.')
     parser.add_argument('--preview-only', action='store_true')
     parser.add_argument('--cached', action='store_true', help='Restore saved verse without a network request')
     parser.add_argument('--demo', action='store_true', help='Render a built-in test message without internet')
     parser.add_argument('--list-ports', action='store_true', help='List serial ports and exit')
     parser.add_argument('--port', help='Serial device, e.g. COM3 or /dev/ttyACM0; defaults to detection')
+    parser.add_argument('--translation', type=version_code, default=None, help='Bible Gateway version code, e.g. CSB, NIV, KJV, RVR1960; default CSB for online fetches')
     parser.add_argument('--font', help='Path to a TrueType font')
     parser.add_argument('--color', default='#ADD8E6', help='Text colour, default: #ADD8E6')
     parser.add_argument('--brightness', type=int, default=50, choices=range(101), metavar='0-100')
@@ -247,7 +256,7 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     handler = RotatingFileHandler(root / 'verse.log', maxBytes=200_000, backupCount=2, encoding='utf-8')
     logging.basicConfig(level=logging.INFO, handlers=[handler, logging.StreamHandler()],
-                        format='%(asctime)s %(levelname)s %(message)s')
+                        format='%(asctime)s %(levelname)s %(message)s', force=True)
     lock = FileLock(str(root / '.lock'))
     try:
         lock.acquire(timeout=0)
@@ -262,7 +271,7 @@ def main():
             data = json.loads(cache.read_text(encoding='utf-8'))
         else:
             try:
-                data = fetch()
+                data = fetch(args.translation or 'CSB')
                 temp = cache.with_suffix('.tmp')
                 temp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
                 temp.replace(cache)
@@ -271,6 +280,10 @@ def main():
                 if not cache.exists():
                     raise
                 data = json.loads(cache.read_text(encoding='utf-8'))
+        if not args.demo:
+            expected = args.translation or (None if args.cached else 'CSB')
+            if expected and data.get('translation') != expected:
+                raise ValueError(f'Cached verse is not {expected}; fetch that translation online first.')
         image = render(data, font, color)
         image.save(root / 'preview.png')
         if not args.preview_only:

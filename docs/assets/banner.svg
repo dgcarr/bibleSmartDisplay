@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+<title id="title">Bible Smart Display</title><desc id="desc">A daily verse. A quiet moment. Blue display illustration.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1730"/><stop offset="1" stop-color="#164e63"/></linearGradient></defs>
+<rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+<circle cx="1120" cy="40" r="190" fill="#38bdf8" opacity=".08"/>
+<rect x="65" y="65" width="250" height="160" rx="16" fill="#050b16" stroke="#7dd3fc" stroke-width="3"/>
+<path d="M105 110h170M105 134h145M105 158h160M150 192h80" stroke="#ADD8E6" stroke-width="7" stroke-linecap="round"/>
+<path d="M160 225v20h60v-20" fill="none" stroke="#7dd3fc" stroke-width="4"/>
+<text x="365" y="125" fill="#e0f2fe" font-family="sans-serif" font-size="49" font-weight="700">Bible Smart Display</text>
+<text x="368" y="177" fill="#ADD8E6" font-family="sans-serif" font-size="26">A daily verse. A quiet moment.</text>
+<text x="368" y="223" fill="#7dd3fc" font-family="sans-serif" font-size="18" letter-spacing="2">YOUR SCREEN · YOUR TRANSLATION</text>
+</svg>
