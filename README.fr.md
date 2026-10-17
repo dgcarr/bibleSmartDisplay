@@ -10,11 +10,49 @@ Pour un **Turing Smart Screen de 3,5 pouces ou un écran USB similaire**.
 
 Ces appareils sont aussi vendus sous le nom **« IPS secondary screen » (écran secondaire IPS)**, notamment sur AliExpress. Cette appellation ne garantit pas la compatibilité : consultez le tableau des modèles ci-dessous.
 
-[Télécharger pour Windows](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [État de la compilation](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
+[Télécharger l’application](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [État de la compilation](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/desktop.yml) · [GPL v3](LICENSE)
 
 **Traduction au choix · Texte bleu clair · Luminosité réglable · Restauration hors ligne**
 
 L’application récupère la [référence quotidienne de Bible League](https://www.bibleleague.org/verse-of-the-day/), cherche le passage sur Bible Gateway dans la traduction choisie (**CSB** par défaut), puis l’affiche sur votre écran. La taille du texte s’adapte à l’espace disponible.
+
+## Le plus simple : télécharger l’application
+
+**Recommandé pour presque tout le monde. Téléchargez l’application prête à l’emploi : aucune installation de Python ou Git, aucune configuration dans le terminal.**
+
+### [⬇ Ouvrir la dernière version →](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
+
+| Votre ordinateur | Fichier à télécharger | Installation |
+| :--- | :--- | :--- |
+| Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Lancez l’installateur |
+| macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Ouvrez le DMG et glissez l’app dans Applications |
+| macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Ouvrez le DMG et glissez l’app dans Applications |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | Ouvrez avec l’installateur de logiciels |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | Ouvrez avec l’installateur de logiciels |
+| Autres bureaux Linux | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extrayez et ouvrez l’exécutable |
+
+## Configurer l’écran
+
+1. Branchez l’écran avec un **câble USB de données** et fermez le logiciel du fabricant.
+2. Ouvrez **Bible Smart Display** depuis le menu des applications. Suivez l’assistant pour choisir le modèle et le port USB, la couleur et la traduction biblique, puis envoyez une image de test.
+3. Choisissez d’activer ou non les **mises à jour quotidiennes** et le **démarrage à la connexion**, puis terminez. Cliquez sur **Actualiser maintenant** pour obtenir le premier verset.
+
+**C’est installé ! Vous n’avez pas besoin de suivre les instructions d’installation depuis le code source.**
+
+## Réglages quotidiens
+
+L’icône de la zone de notification ou de la barre des menus permet de changer modèle, couleur, luminosité, traduction, police et langue. Anglais, chinois simplifié, espagnol et français sont inclus. La programmation quotidienne et le démarrage à la connexion disposent de cases séparées. Quitter l’app laisse les mises à jour programmées actives pendant votre session.
+
+<details>
+<summary>Capture de l’application</summary>
+
+![Bible Smart Display](docs/assets/desktop-fr.png)
+
+</details>
+
+[Guide, dépannage et désinstallation (anglais)](docs/desktop.md) · [Signaler un problème](https://github.com/dgcarr/bibleSmartDisplay/issues)
+
+Nécessite un système de bureau compatible. Les paquets ne sont ni signés par un éditeur ni notariés par Apple ; consultez les exigences dans le [guide](docs/desktop.md). Avant de désinstaller, choisissez **Supprimer la configuration automatique** et quittez l’app.
 
 ## Choisir le modèle d’écran
 
@@ -29,25 +67,30 @@ L’application récupère la [référence quotidienne de Bible League](https://
 
 Sélectionnez le modèle et le port exacts. **Expérimental** signifie que le protocole est implémenté et testé avec une liaison série simulée, mais pas encore avec le matériel physique dans ce projet.
 
-```powershell
-.\bibleSmartDisplay.exe --list-models
-.\bibleSmartDisplay.exe --model xuanfang-3.5 --port COM3
-.\bibleSmartDisplay.exe --model turing-3.5 --port COM3
-```
-
-Sous Linux/macOS, ajoutez les mêmes options après `.venv/bin/python outputs/daily-verse/verse_display.py`. Les modèles expérimentaux exigent un `--port` explicite. Utilisez `--demo --preview-only` pour vérifier la mise en page sans matériel.
-
-Seul `turing-3.5`, choisi explicitement, accepte une réponse HELLO vide. UsbPCMonitor exige la réponse correspondant à sa taille. Ne choisissez pas Turing original pour contourner une erreur. Certaines révisions XuanFang permettent seulement d’allumer ou d’éteindre le rétroéclairage ; l’éclairage RGB arrière n’est pas configuré. Qiye ne dispose pas d’une vérification d’identité : sélectionnez le bon appareil.
-
 **Non pris en charge :** AX206/AIDA64/USB2LCD, Turing 5 pouces Revision C, écrans ronds, Waveshare USB-Monitor, GUITION, Fuldho/SmartMonitor et HDMI. AX206 nécessite un backend USB direct distinct. UsbPCMonitor 5 pouces et Turing 5 pouces utilisent des protocoles différents.
 
-## Choisir l’installation
+## Pilotes USB
 
-| Système | Installation |
+**Si l’écran apparaît déjà comme un port série utilisable, essayez-le avant d’installer un pilote supplémentaire.**
+
+| Appareil / système | Ressource officielle |
 | :--- | :--- |
-| Windows 10/11 x64 | Application portable, sans installer Python |
-| Linux / Raspberry Pi OS | Code source avec Python 3.10 ou ultérieur |
-| macOS | Code source avec Python 3.10 ou ultérieur |
+| Écran Turing/TURZX | [Téléchargements du fabricant](https://www.turzx.com/en/category/download/) : choisissez le modèle exact |
+| Périphérique USB CDC sous Windows | [Pilote série intégré de Microsoft](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids) : installation automatique pour les appareils compatibles |
+| Windows, puce CH340/CH341 confirmée | [Pilote WCH pour Windows](https://www.wch.cn/downloads/CH341SER_EXE.html) |
+| macOS, puce série WCH prise en charge | [Pilote WCH pour Mac et instructions](https://github.com/WCHSoftGroup/ch34xser_macos) |
+| Linux | Les appareils compatibles utilisent généralement les pilotes du noyau |
+
+Les pilotes WCH **ne sont pas des pilotes universels pour tous les écrans**. Sous Windows, ouvrez **Gestionnaire de périphériques → Ports (COM et LPT)**. En présence d’un avertissement, consultez **Propriétés → Détails → Numéros d’identification du matériel** pour choisir le bon pilote. [Guide complet (en anglais)](docs/setup.md#windows-usb-drivers)
+
+---
+
+<details>
+<summary><strong>Facultatif : code source et outils en ligne de commande (utilisateurs avancés)</strong></summary>
+
+**Pour les développeurs et les passionnés. C’est une autre méthode d’installation, pas l’étape suivante après le téléchargement de l’application.** Les commandes ci-dessous concernent l’édition distincte en ligne de commande. Ignorez cette section si vous utilisez l’application de bureau.
+
+[Desktop app source / GUI](docs/desktop.md#build-from-source) · [CLI / Python](docs/setup.md#install-from-source-all-three-desktop-operating-systems)
 
 Préparez votre écran, un **câble USB permettant le transfert de données** et une connexion internet. Fermez le logiciel du fabricant avant de commencer.
 
@@ -111,20 +154,6 @@ python3 -m venv .venv
 
 Si la détection échoue, utilisez `--list-ports`, puis `--port /dev/cu.usbmodem1234` en remplaçant l’exemple par votre port réel. [Aide macOS (en anglais)](docs/setup.md#macos)
 
-## Pilotes USB
-
-**Si l’écran apparaît déjà comme un port série utilisable, essayez-le avant d’installer un pilote supplémentaire.**
-
-| Appareil / système | Ressource officielle |
-| :--- | :--- |
-| Écran Turing/TURZX | [Téléchargements du fabricant](https://www.turzx.com/en/category/download/) : choisissez le modèle exact |
-| Périphérique USB CDC sous Windows | [Pilote série intégré de Microsoft](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids) : installation automatique pour les appareils compatibles |
-| Windows, puce CH340/CH341 confirmée | [Pilote WCH pour Windows](https://www.wch.cn/downloads/CH341SER_EXE.html) |
-| macOS, puce série WCH prise en charge | [Pilote WCH pour Mac et instructions](https://github.com/WCHSoftGroup/ch34xser_macos) |
-| Linux | Les appareils compatibles utilisent généralement les pilotes du noyau |
-
-Les pilotes WCH **ne sont pas des pilotes universels pour tous les écrans**. Sous Windows, ouvrez **Gestionnaire de périphériques → Ports (COM et LPT)**. En présence d’un avertissement, consultez **Propriétés → Détails → Numéros d’identification du matériel** pour choisir le bon pilote. [Guide complet (en anglais)](docs/setup.md#windows-usb-drivers)
-
 ## Choisir une traduction
 
 Utilisez un [code de version Bible Gateway](https://www.biblegateway.com/versions/). Par exemple, `LSG` pour Louis Segond :
@@ -186,45 +215,7 @@ L’ordinateur doit fonctionner et l’écran être connecté. Le premier télé
 
 Indiquez votre système d’exploitation, le modèle de l’écran, ses identifiants matériels et le message d’erreur.
 
----
-
-### Paquets Debian / Ubuntu / Raspberry Pi OS
-
-Téléchargez `biblesmartdisplay_0.4.2_amd64.deb` pour les PC Intel/AMD ou `biblesmartdisplay_0.4.2_arm64.deb` pour Raspberry Pi et les ordinateurs ARM 64 bits depuis [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Ouvrez le fichier avec votre installateur de logiciels, puis lancez **Bible Smart Display** depuis le menu des applications. Le gestionnaire installe les dépendances ; Python est inclus.
-
-Avant de désinstaller, choisissez **Supprimer la configuration automatique** et quittez l’application. Les préférences et le verset enregistré sont conservés. [Commandes d’installation et de suppression, en anglais](docs/desktop.md#debian-packages).
-
-
-## Application de bureau : assistant et barre des menus
-
-**English · 简体中文 · Español · Français** — choisissez la langue dans Réglages. L’application propose le choix du modèle et du port USB, la couleur, la luminosité, la traduction biblique, un aperçu hors ligne et les mises à jour quotidiennes. Les paquets incluent Python.
-
-![Brancher, personnaliser, tester et programmer](docs/assets/desktop-setup.svg)
-
-<details><summary>English · 简体中文 · Español · Français</summary>
-
-![Desktop app](docs/assets/desktop-fr.png)
-
 </details>
-
-| Système | Téléchargement |
-| :--- | :--- |
-| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
-| macOS 13+, Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
-| Linux x64 / Raspberry Pi 64 bits | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
-
-[Téléchargements](https://github.com/dgcarr/bibleSmartDisplay/releases) · [Guide détaillé en anglais](docs/desktop.md)
-
-1. Windows : lancez l’installateur. Mac : glissez l’application dans Applications. Linux : extrayez le paquet et lancez `./BibleSmartDisplay --install` pour ouvrir l’installateur graphique, ou utilisez `Install.desktop` si votre bureau le permet.
-2. Choisissez le modèle exact et le port USB, personnalisez l’affichage puis envoyez une image de test.
-3. Activez les mises à jour quotidiennes et le démarrage à la connexion. Valeurs initiales : 06:00 locale, CSB, bleu clair et luminosité à 50 %.
-
-Les mises à jour programmées continuent pendant votre session après fermeture de l’application. La détection de reconnexion nécessite qu’elle reste ouverte. Avant de désinstaller, choisissez **Supprimer la configuration automatique**. La correction des permissions USB sous Linux affiche une demande d’authentification administrateur ; certains appareils nécessitent un pilote du fabricant.
-
-Les premiers paquets ne sont ni signés par un éditeur ni notariés par Apple. Seul le modèle 3,5 pouces connecté sous Ubuntu a été vérifié physiquement. Linux nécessite Debian 12+, Ubuntu 24.04+ ou Raspberry Pi OS Bookworm+ 64 bits, un bureau graphique et les services utilisateur systemd. La langue de l’interface et la traduction biblique sont indépendantes.
-
-**Les instructions suivantes concernent l’édition en ligne de commande.** Si une version ne contient pas encore les paquets de bureau, choisissez-en une qui les contient ou suivez le guide de compilation.
-
 
 ### Remerciements et licence
 

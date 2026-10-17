@@ -12,53 +12,52 @@ For a **Turing Smart Screen 3.5-inch or similar** USB display.
 
 These displays are also sold as **“IPS secondary screens”**, including on AliExpress. That listing name alone does not confirm compatibility; check the model table below.
 
-[![Windows download](https://img.shields.io/badge/Download-Windows_x64-2563eb?style=for-the-badge)](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
-[![Build](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml/badge.svg)](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml)
+[![Desktop app download](https://img.shields.io/badge/Download-Desktop_app-2563eb?style=for-the-badge)](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
+[![Build](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/desktop.yml/badge.svg)](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/desktop.yml)
 [![Licence](https://img.shields.io/badge/License-GPL_v3-64748b)](LICENSE)
 
 **Choose your translation · Light blue text · Adjustable brightness · Offline restore**
 
-[Windows](#windows) · [Linux](#linux) · [macOS](#macos) · [Drivers](#usb-drivers) · [Help](#need-help)
 
 </div>
 
----
+## The easiest way: download the app
 
-### Debian / Ubuntu / Raspberry Pi OS packages
+**Recommended for almost everyone. Download a ready-made app—no Python, Git or terminal setup required.**
 
-Download `biblesmartdisplay_0.4.2_amd64.deb` for Intel/AMD PCs or `biblesmartdisplay_0.4.2_arm64.deb` for 64-bit Raspberry Pi and ARM computers from [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Open it with your software installer, then launch **Bible Smart Display** from the applications menu. Dependencies are installed by the package manager; Python is bundled.
+### [⬇ Open the latest release →](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
 
-Before uninstalling, select **Remove automatic setup** in Settings and quit the app. Removing the package preserves your preferences and saved verse. [Install/remove commands and supported systems](docs/desktop.md#debian-packages).
+| Your computer | Download this file | Install |
+| :--- | :--- | :--- |
+| Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Run the installer |
+| macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Open the DMG; drag the app to Applications |
+| macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | Open the DMG; drag the app to Applications |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | Open with your software installer |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | Open with your software installer |
+| Other Linux desktops | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | Extract and open the executable |
 
+## Set up your screen
 
-## Desktop app — guided setup and tray controls
+1. Connect your screen using a **USB data cable** and close any vendor display software.
+2. Open **Bible Smart Display** from your applications menu. Follow the wizard to choose the screen model and USB port, set the colour and Bible translation, and send a test image.
+3. Choose whether to enable **daily updates** and **Start at login**, then finish setup. Click **Update now** for your first verse.
 
-**English · 简体中文 · Español · Français** — choose the app language in Settings. The desktop app includes model/USB selection, colour and brightness controls, Bible translation, an offline preview, and automatic daily updates. No Python required for packaged downloads.
+**That’s it—you’re installed. You do not need to follow the source-installation instructions below.**
 
-![Setup overview](docs/assets/desktop-setup.svg)
+## Everyday settings
 
-<details><summary>English · 简体中文 · Español · Français</summary>
+Use the tray/menu-bar icon to change model, colour, brightness, translation, font or interface language. English, Simplified Chinese, Spanish and French are included. Daily scheduling and startup each have their own checkbox. Quitting the tray leaves enabled scheduled updates running during your login session.
 
-![Desktop app](docs/assets/desktop-en.png)
+<details>
+<summary>App screenshot</summary>
+
+![Bible Smart Display](docs/assets/desktop-en.png)
 
 </details>
 
-| Computer | Desktop download |
-| :--- | :--- |
-| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
-| macOS 13+, Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
-| Linux x64 / 64-bit Raspberry Pi | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
+[Desktop guide, troubleshooting and removal](docs/desktop.md) · [Report an issue](https://github.com/dgcarr/bibleSmartDisplay/issues)
 
-[Download desktop assets from Releases](https://github.com/dgcarr/bibleSmartDisplay/releases) · [Installation, setup and removal](docs/desktop.md)
-
-Install, choose the exact screen and USB port, personalise it, send a test image, then enable the daily schedule. Windows uses an installer; Mac users drag the app to Applications; Linux users extract the bundle and launch its graphical installer with `./BibleSmartDisplay --install` (or its `Install.desktop` launcher where supported).
-
-Daily updates run during your login session even after quitting the tray app. Reconnection monitoring requires the app to remain open. Default: 06:00 local time, CSB, light blue, 50% brightness. Remove automatic setup in Settings before uninstalling. Builds are initially unsigned/not notarized; hardware verification remains limited to the connected Ubuntu 3.5-inch model. See the desktop guide for supported OS versions and Linux dependencies.
-
-**The instructions below describe the separate command-line edition.** If a release does not yet contain desktop assets, use one that does or follow the desktop source-build instructions.
-
-
-Bible Smart Display takes [Bible League’s daily reference](https://www.bibleleague.org/verse-of-the-day/), gets your chosen translation from Bible Gateway (default: **CSB**), and puts it on your screen. Text automatically fits the display.
+Requires a supported desktop OS. Builds are unsigned/not notarized; see the [desktop guide](docs/desktop.md) for compatibility and platform requirements. Before uninstalling, choose **Remove automatic setup** and quit the app.
 
 ## Choose your screen model
 
@@ -73,25 +72,30 @@ Bible Smart Display takes [Bible League’s daily reference](https://www.biblele
 
 Select the exact model and serial port. **Experimental** means implemented and covered by simulated serial tests, but not physically tested by this project. These names describe protocols, not guaranteed seller brands.
 
-```powershell
-.\bibleSmartDisplay.exe --list-models
-.\bibleSmartDisplay.exe --model xuanfang-3.5 --port COM3
-.\bibleSmartDisplay.exe --model turing-3.5 --port COM3
-```
-
-Linux/macOS use the same arguments after `.venv/bin/python outputs/daily-verse/verse_display.py`. Experimental models require an explicit `--port`; no cross-protocol probing is performed. Add `--demo --preview-only` to preview a selected model's layout without hardware.
-
-The original Turing model accepts an empty HELLO response **only when explicitly selected**. UsbPCMonitor models require the matching size response. Do not select original Turing merely to bypass an error. XuanFang brightness is on/off on some revisions; its RGB backplate is not configured here. Qiye has no identity handshake, so correct manual selection matters.
-
 **Not supported:** AX206/AIDA64/USB2LCD, Turing 5-inch Revision C, round screens, Waveshare USB-Monitor, GUITION, Fuldho/SmartMonitor and HDMI displays. AX206 needs a separate direct-USB backend, not a serial-driver switch. UsbPCMonitor 5-inch and Turing 5-inch are different protocols.
 
-## Start here
+## USB drivers
 
-| Your computer | Install this |
+**If your screen already appears as a serial port, try it before installing a driver.**
+
+| Device / system | Official help or download |
 | :--- | :--- |
-| **Windows 10/11, x64** | [Download the app](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) — no Python needed |
-| **Linux / Raspberry Pi OS** | [Run from source](#linux) with Python 3.10+ |
-| **macOS** | [Run from source](#macos) with Python 3.10+ |
+| **Turing/TURZX screen** | [Manufacturer downloads](https://www.turzx.com/en/category/download/) — choose your exact model |
+| **Windows USB CDC device** | [Microsoft’s built-in USB serial driver](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids) — compatible devices install automatically |
+| **Windows, confirmed CH340/CH341 chip** | [WCH Windows driver](https://www.wch.cn/downloads/CH341SER_EXE.html) |
+| **macOS, supported WCH serial chip** | [WCH Mac driver and instructions](https://github.com/WCHSoftGroup/ch34xser_macos) |
+| **Linux** | Compatible devices normally use the kernel’s existing serial drivers |
+
+WCH drivers are **not universal screen drivers**. On Windows, check **Device Manager → Ports (COM & LPT)**. If the device has a warning icon, inspect **Properties → Details → Hardware Ids** and match the driver to that hardware. [Full driver guidance →](docs/setup.md#windows-usb-drivers)
+
+---
+
+<details>
+<summary><strong>Optional: source installation and command-line tools (advanced users)</strong></summary>
+
+**For developers and enthusiasts only. This is an alternative to the downloaded app, not the next installation step.** The commands below run the separate command-line edition. You can ignore this entire section when using the desktop app.
+
+[Desktop app source / GUI](docs/desktop.md#build-from-source) · [CLI / Python](docs/setup.md#install-from-source-all-three-desktop-operating-systems)
 
 Have your screen, a **USB data cable**, and an internet connection ready. Close any vendor display software before starting.
 
@@ -179,20 +183,6 @@ python3 -m venv .venv
 
 If automatic detection fails, run with `--list-ports`, then `--port /dev/cu.usbmodem1234`, replacing the example with your actual port. [More macOS help →](docs/setup.md#macos)
 
-## USB drivers
-
-**If your screen already appears as a serial port, try it before installing a driver.**
-
-| Device / system | Official help or download |
-| :--- | :--- |
-| **Turing/TURZX screen** | [Manufacturer downloads](https://www.turzx.com/en/category/download/) — choose your exact model |
-| **Windows USB CDC device** | [Microsoft’s built-in USB serial driver](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids) — compatible devices install automatically |
-| **Windows, confirmed CH340/CH341 chip** | [WCH Windows driver](https://www.wch.cn/downloads/CH341SER_EXE.html) |
-| **macOS, supported WCH serial chip** | [WCH Mac driver and instructions](https://github.com/WCHSoftGroup/ch34xser_macos) |
-| **Linux** | Compatible devices normally use the kernel’s existing serial drivers |
-
-WCH drivers are **not universal screen drivers**. On Windows, check **Device Manager → Ports (COM & LPT)**. If the device has a warning icon, inspect **Properties → Details → Hardware Ids** and match the driver to that hardware. [Full driver guidance →](docs/setup.md#windows-usb-drivers)
-
 ## Choose a translation
 
 Use `--translation` with a [Bible Gateway version code](https://www.biblegateway.com/versions/):
@@ -257,7 +247,7 @@ Your computer must be running and the screen connected. The first verse needs in
 
 When reporting a problem, include your OS, display model, hardware IDs and the error message.
 
----
+</details>
 
 ### Credits & licence
 

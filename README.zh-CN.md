@@ -10,11 +10,49 @@
 
 在 AliExpress 等平台，这类产品也常以 **“IPS secondary screen”（IPS 副屏）** 的名称销售。商品名称不能保证兼容性，请确认下方的型号列表。
 
-[下载 Windows 版](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [构建状态](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/windows.yml) · [GPL v3](LICENSE)
+[下载应用](https://github.com/dgcarr/bibleSmartDisplay/releases/latest) · [构建状态](https://github.com/dgcarr/bibleSmartDisplay/actions/workflows/desktop.yml) · [GPL v3](LICENSE)
 
 **可选译本 · 浅蓝色文字 · 可调亮度 · 离线恢复**
 
 本程序读取 [Bible League 的每日经文出处](https://www.bibleleague.org/verse-of-the-day/)，从 Bible Gateway 获取所选译本的经文（默认 **CSB**），再显示到屏幕上。字号会根据内容自动调整。
+
+## 最简单的方式：下载应用
+
+**推荐大多数用户直接下载打包好的应用。无需安装 Python、Git，也无需使用终端进行设置。**
+
+### [⬇ 打开最新发行版 →](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)
+
+| 电脑系统 | 下载文件 | 安装方式 |
+| :--- | :--- | :--- |
+| Windows 10/11 · x64 | `bibleSmartDisplay-windows-x64-setup.exe` | 运行安装程序 |
+| macOS 13+ · Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | 打开 DMG，将应用拖入“应用程序” |
+| macOS 13+ · Intel | `bibleSmartDisplay-macos-x64.dmg` | 打开 DMG，将应用拖入“应用程序” |
+| Debian / Ubuntu · Intel/AMD | `biblesmartdisplay_0.4.2_amd64.deb` | 使用软件安装程序打开 |
+| Raspberry Pi OS / Debian / Ubuntu · ARM64 | `biblesmartdisplay_0.4.2_arm64.deb` | 使用软件安装程序打开 |
+| 其他 Linux 桌面 | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` | 解压并打开可执行文件 |
+
+## 设置屏幕
+
+1. 使用 **USB 数据线**连接屏幕，并关闭厂商的屏幕软件。
+2. 从应用菜单打开 **Bible Smart Display**。按照向导选择型号和 USB 端口，设置颜色和圣经译本，然后发送测试图像。
+3. 自行选择是否启用**每日更新**和**登录时启动**，完成设置。点击“立即更新”获取第一段经文。
+
+**安装完成！无需继续执行下面的源代码安装说明。**
+
+## 日常设置
+
+通过托盘或菜单栏图标更改型号、颜色、亮度、译本、字体和界面语言。支持英语、简体中文、西班牙语和法语。每日更新与登录启动各有独立复选框。退出托盘后，登录期间已启用的计划更新仍会运行。
+
+<details>
+<summary>应用截图</summary>
+
+![Bible Smart Display](docs/assets/desktop-zh.png)
+
+</details>
+
+[桌面指南、故障排查及卸载（英文）](docs/desktop.md) · [报告问题](https://github.com/dgcarr/bibleSmartDisplay/issues)
+
+需要受支持的桌面操作系统。初始版本未进行发布者签名或 Apple 公证，系统要求请参阅[桌面指南](docs/desktop.md)。卸载前，请选择“移除自动设置”并退出应用。
 
 ## 选择屏幕型号
 
@@ -29,25 +67,30 @@
 
 请指定准确型号和串口。**实验性**表示已实现并通过模拟串口测试，但本项目尚未进行对应硬件的实机验证。商品名称不能保证协议兼容。
 
-```powershell
-.\bibleSmartDisplay.exe --list-models
-.\bibleSmartDisplay.exe --model xuanfang-3.5 --port COM3
-.\bibleSmartDisplay.exe --model turing-3.5 --port COM3
-```
-
-Linux/macOS 将相同参数添加到 `.venv/bin/python outputs/daily-verse/verse_display.py` 后面。实验性型号必须显式指定 `--port`。使用 `--demo --preview-only` 可在不连接硬件时预览布局。
-
-仅显式选择 `turing-3.5` 时允许 HELLO 无响应；UsbPCMonitor 必须返回对应尺寸的响应。不要用原版 Turing 选项绕过未知设备错误。部分 XuanFang 版本只支持背光开关；本程序不配置 RGB 背板。Qiye 没有身份握手，必须正确选择设备。
-
 **仍不支持：** AX206/AIDA64/USB2LCD、Turing 5 英寸 Revision C、圆屏、Waveshare USB-Monitor、GUITION、Fuldho/SmartMonitor 和 HDMI 显示器。AX206 需要单独的直接 USB 后端。UsbPCMonitor 5 英寸与 Turing 5 英寸协议不同。
 
-## 选择安装方式
+## USB 驱动
 
-| 系统 | 安装方式 |
+**如果屏幕已显示为可用串口，请先尝试运行，无需急于安装驱动。**
+
+| 设备 / 系统 | 官方资源 |
 | :--- | :--- |
-| Windows 10/11 x64 | 下载便携版，无需安装 Python |
-| Linux / Raspberry Pi OS | 使用 Python 3.10 或更新版本运行源码 |
-| macOS | 使用 Python 3.10 或更新版本运行源码 |
+| Turing/TURZX 屏幕 | [厂商下载页](https://www.turzx.com/en/category/download/)，请选择对应型号 |
+| Windows USB CDC 设备 | [微软内置 USB 串口驱动说明](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids)，兼容设备可自动安装 |
+| Windows，已确认采用 CH340/CH341 | [WCH Windows 驱动](https://www.wch.cn/downloads/CH341SER_EXE.html) |
+| macOS，受支持的 WCH 串口芯片 | [WCH macOS 驱动及安装说明](https://github.com/WCHSoftGroup/ch34xser_macos) |
+| Linux | 兼容设备通常使用内核自带串口驱动 |
+
+WCH 驱动**不是通用屏幕驱动**。Windows 中打开“设备管理器 → 端口 (COM 和 LPT)”。若有警告图标，在“属性 → 详细信息 → 硬件 ID”中确认型号，再选择对应驱动。[完整驱动说明（英文）](docs/setup.md#windows-usb-drivers)
+
+---
+
+<details>
+<summary><strong>可选：从源代码安装和使用命令行（高级用户）</strong></summary>
+
+**仅供开发者和爱好者选择。这是下载应用之外的另一种安装方式，不是安装后的下一步。** 以下命令用于独立命令行版本；使用桌面应用时，可以完全忽略此部分。
+
+[Desktop app source / GUI](docs/desktop.md#build-from-source) · [CLI / Python](docs/setup.md#install-from-source-all-three-desktop-operating-systems)
 
 请准备好屏幕、**支持数据传输的 USB 线**和网络连接。运行前关闭厂商自带的屏幕软件。
 
@@ -110,20 +153,6 @@ python3 -m venv .venv
 ```
 
 自动识别失败时先用 `--list-ports`，再添加 `--port /dev/cu.usbmodem1234`，并替换为实际端口。[macOS 帮助（英文）](docs/setup.md#macos)
-
-## USB 驱动
-
-**如果屏幕已显示为可用串口，请先尝试运行，无需急于安装驱动。**
-
-| 设备 / 系统 | 官方资源 |
-| :--- | :--- |
-| Turing/TURZX 屏幕 | [厂商下载页](https://www.turzx.com/en/category/download/)，请选择对应型号 |
-| Windows USB CDC 设备 | [微软内置 USB 串口驱动说明](https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/usb-driver-installation-based-on-compatible-ids)，兼容设备可自动安装 |
-| Windows，已确认采用 CH340/CH341 | [WCH Windows 驱动](https://www.wch.cn/downloads/CH341SER_EXE.html) |
-| macOS，受支持的 WCH 串口芯片 | [WCH macOS 驱动及安装说明](https://github.com/WCHSoftGroup/ch34xser_macos) |
-| Linux | 兼容设备通常使用内核自带串口驱动 |
-
-WCH 驱动**不是通用屏幕驱动**。Windows 中打开“设备管理器 → 端口 (COM 和 LPT)”。若有警告图标，在“属性 → 详细信息 → 硬件 ID”中确认型号，再选择对应驱动。[完整驱动说明（英文）](docs/setup.md#windows-usb-drivers)
 
 ## 选择圣经译本
 
@@ -188,45 +217,7 @@ Linux/macOS 将相同参数放在 `.venv/bin/python outputs/daily-verse/verse_di
 
 提交问题时请提供操作系统、屏幕型号、硬件 ID 和错误信息。
 
----
-
-### Debian / Ubuntu / Raspberry Pi OS 安装包
-
-从[发行版页面](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)下载 `biblesmartdisplay_0.4.2_amd64.deb`（Intel/AMD 电脑）或 `biblesmartdisplay_0.4.2_arm64.deb`（64 位树莓派和 ARM 电脑）。使用软件安装程序打开，然后从应用菜单启动 **Bible Smart Display**。包管理器会安装依赖，Python 已包含在内。
-
-卸载前，在设置中选择“移除自动设置”并退出应用。卸载软件包会保留用户设置和已保存经文。[安装和卸载命令（英文）](docs/desktop.md#debian-packages)。
-
-
-## 桌面应用：引导设置和托盘控制
-
-**English · 简体中文 · Español · Français** — 在设置中选择界面语言。桌面应用提供型号和 USB 端口选择、文字颜色、亮度、圣经译本、离线预览和每日自动更新。打包版本不需要安装 Python。
-
-![设置步骤：连接、个性化、测试、定时更新](docs/assets/desktop-setup.svg)
-
-<details><summary>English · 简体中文 · Español · Français</summary>
-
-![Desktop app](docs/assets/desktop-zh.png)
-
 </details>
-
-| 系统 | 下载文件 |
-| :--- | :--- |
-| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
-| macOS 13+，Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
-| Linux x64 / 64 位树莓派 | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
-
-[下载桌面版本](https://github.com/dgcarr/bibleSmartDisplay/releases) · [详细指南（英文）](docs/desktop.md)
-
-1. Windows 运行安装程序；Mac 将应用拖入“应用程序”；Linux 解压后运行 `./BibleSmartDisplay --install` 打开图形安装程序，也可使用系统支持的 `Install.desktop` 启动器。
-2. 选择准确型号和 USB 端口，设置颜色、亮度和译本，并发送测试图像。
-3. 启用每日更新和登录启动。默认时间为当地 06:00，CSB 译本、浅蓝色文字、50% 亮度。
-
-退出托盘应用后，登录期间的计划更新仍会运行；重新连接检测需要应用保持运行。卸载前在设置中选择“移除自动设置”。Linux 权限修复会显示管理员认证窗口；部分设备可能需要厂商 USB 驱动。界面语言与圣经译本分别设置，中文经文还需支持中文的字体。
-
-初始版本未进行发布者签名或 Apple 公证。只有连接的 Ubuntu 3.5 英寸型号经过实机验证，其他型号或系统的硬件状态请参阅兼容性说明。Linux 目标为 Debian 12+、Ubuntu 24.04+ 和 64 位 Raspberry Pi OS Bookworm+，需要图形桌面和 systemd 用户服务。
-
-**以下为独立命令行版本的说明。** 如果某个发行版还没有桌面文件，请选择包含这些文件的发行版或参照桌面指南从源代码构建。
-
 
 ### 致谢与许可
 
