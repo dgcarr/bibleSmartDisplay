@@ -288,7 +288,7 @@ def display_library(image, device, brightness, protocol):
         driver.close_serial()
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description='Daily Bible verse for USB smart displays.')
     parser.add_argument('--model', choices=MODELS, default='usbpcmonitor-3.5', help='Display model; all except usbpcmonitor-3.5 are experimental')
     parser.add_argument('--list-models', action='store_true', help='List models and testing status, then exit')
@@ -302,7 +302,7 @@ def main():
     parser.add_argument('--color', default='#ADD8E6', help='Text colour, default: #ADD8E6')
     parser.add_argument('--brightness', type=int, default=50, choices=range(101), metavar='0-100')
     parser.add_argument('--data-dir', type=Path, default=default_data_dir(), help='Cache, preview and log directory')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.list_models:
         for name, (w, h, protocol, _) in MODELS.items():
             status = 'tested on Ubuntu' if name == 'usbpcmonitor-3.5' else 'EXPERIMENTAL: hardware untested'
@@ -312,10 +312,15 @@ def main():
         for port in list_ports.comports():
             print(f'{port.device}: {port.description} [{port.hwid}]')
         return
+    return execute(args)
+
+
+def execute(args):
+    """Shared single-update engine for the CLI, GUI and scheduled jobs."""
     color = ImageColor.getrgb(args.color)
     font = args.font or default_font()
     if not args.preview_only and args.model != 'usbpcmonitor-3.5' and not args.port:
-        parser.error('Experimental models require an explicit --port; use --list-ports.')
+        raise ValueError('Experimental models require an explicit --port; use --list-ports.')
     device = None if args.preview_only else (args.port or choose_port())
     root = args.data_dir.expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
@@ -327,7 +332,7 @@ def main():
         lock.acquire(timeout=0)
     except Timeout:
         logging.info('Another instance is running; skipping this update')
-        return
+        raise RuntimeError('Another update is already running; try again shortly.')
     try:
         cache = root / 'last-verse.json'
         if args.demo:

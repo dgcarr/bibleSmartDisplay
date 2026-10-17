@@ -65,4 +65,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" release/* --title "$RELEASE_TAG" --notes "Windows x64 portable executable. Extract the ZIP and run Run-display.cmd. See README for USB drivers, supported models and experimental hardware status, and Linux/macOS source installation. Windows automated preview tests pass; physical Windows USB testing is still needed."
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title "$RELEASE_TAG" --notes "Windows x64 portable executable. Extract the ZIP and run Run-display.cmd. See README for USB drivers, supported models and experimental hardware status, and Linux/macOS source installation. Windows automated preview tests pass; physical Windows USB testing is still needed."
+
+          gh release upload "$RELEASE_TAG" release/* --clobber

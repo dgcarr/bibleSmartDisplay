@@ -190,6 +190,31 @@ Linux/macOS 将相同参数放在 `.venv/bin/python outputs/daily-verse/verse_di
 
 ---
 
+## 桌面应用：引导设置和托盘控制
+
+**English · 简体中文 · Español · Français** — 在设置中选择界面语言。桌面应用提供型号和 USB 端口选择、文字颜色、亮度、圣经译本、离线预览和每日自动更新。打包版本不需要安装 Python。
+
+![设置步骤：连接、个性化、测试、定时更新](docs/assets/desktop-setup.svg)
+
+| 系统 | 下载文件 |
+| :--- | :--- |
+| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
+| macOS 13+，Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
+| Linux x64 / 64 位树莓派 | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
+
+[下载桌面版本](https://github.com/dgcarr/bibleSmartDisplay/releases) · [详细指南（英文）](docs/desktop.md)
+
+1. Windows 运行安装程序；Mac 将应用拖入“应用程序”；Linux 解压后运行 `./BibleSmartDisplay --install` 打开图形安装程序，也可使用系统支持的 `Install.desktop` 启动器。
+2. 选择准确型号和 USB 端口，设置颜色、亮度和译本，并发送测试图像。
+3. 启用每日更新和登录启动。默认时间为当地 06:00，CSB 译本、浅蓝色文字、50% 亮度。
+
+退出托盘应用后，登录期间的计划更新仍会运行；重新连接检测需要应用保持运行。卸载前在设置中选择“移除自动设置”。Linux 权限修复会显示管理员认证窗口；部分设备可能需要厂商 USB 驱动。界面语言与圣经译本分别设置，中文经文还需支持中文的字体。
+
+初始版本未进行发布者签名或 Apple 公证。只有连接的 Ubuntu 3.5 英寸型号经过实机验证，其他型号或系统的硬件状态请参阅兼容性说明。Linux 目标为 Debian 12+、Ubuntu 24.04+ 和 64 位 Raspberry Pi OS Bookworm+，需要图形桌面和 systemd 用户服务。
+
+**以下为独立命令行版本的说明。** 如果某个发行版还没有桌面文件，请选择包含这些文件的发行版或参照桌面指南从源代码构建。
+
+
 ### 致谢与许可
 
 本项目参考 Matthieu Houdebine 及贡献者维护的 [turing-smart-screen-python](https://github.com/mathoudebine/turing-smart-screen-python) 协议实现，与屏幕厂商无隶属关系。软件采用 **[GPL v3](LICENSE)**；上游文件保留其原有版权声明。

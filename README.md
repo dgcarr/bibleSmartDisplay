@@ -24,6 +24,27 @@ These displays are also sold as **“IPS secondary screens”**, including on Al
 
 ---
 
+## Desktop app — guided setup and tray controls
+
+**English · 简体中文 · Español · Français** — choose the app language in Settings. The desktop app includes model/USB selection, colour and brightness controls, Bible translation, an offline preview, and automatic daily updates. No Python required for packaged downloads.
+
+![Setup overview](docs/assets/desktop-setup.svg)
+
+| Computer | Desktop download |
+| :--- | :--- |
+| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
+| macOS 13+, Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
+| Linux x64 / 64-bit Raspberry Pi | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
+
+[Download desktop assets from Releases](https://github.com/dgcarr/bibleSmartDisplay/releases) · [Installation, setup and removal](docs/desktop.md)
+
+Install, choose the exact screen and USB port, personalise it, send a test image, then enable the daily schedule. Windows uses an installer; Mac users drag the app to Applications; Linux users extract the bundle and launch its graphical installer with `./BibleSmartDisplay --install` (or its `Install.desktop` launcher where supported).
+
+Daily updates run during your login session even after quitting the tray app. Reconnection monitoring requires the app to remain open. Default: 06:00 local time, CSB, light blue, 50% brightness. Remove automatic setup in Settings before uninstalling. Builds are initially unsigned/not notarized; hardware verification remains limited to the connected Ubuntu 3.5-inch model. See the desktop guide for supported OS versions and Linux dependencies.
+
+**The instructions below describe the separate command-line edition.** If a release does not yet contain desktop assets, use one that does or follow the desktop source-build instructions.
+
+
 Bible Smart Display takes [Bible League’s daily reference](https://www.bibleleague.org/verse-of-the-day/), gets your chosen translation from Bible Gateway (default: **CSB**), and puts it on your screen. Text automatically fits the display.
 
 ## Choose your screen model

@@ -1,0 +1,118 @@
+name: Desktop applications
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-latest
+            platform: windows-x64
+          - runner: ubuntu-24.04
+            platform: linux-x64
+          - runner: ubuntu-24.04-arm
+            platform: linux-arm64
+          - runner: macos-15-intel
+            platform: macos-x64
+          - runner: macos-15
+            platform: macos-arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Linux on Debian 12 for Debian and Ubuntu compatibility
+        if: runner.os == 'Linux'
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src debian:12 bash -ec '
+            apt-get update
+            apt-get install -y python3 python3-venv binutils libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0 fonts-dejavu-core
+            python3 -m venv /tmp/build-env
+            /tmp/build-env/bin/pip install -r requirements-desktop.txt
+            QT_QPA_PLATFORM=offscreen /tmp/build-env/bin/python -m unittest discover -s tests -v
+            /tmp/build-env/bin/python scripts/build_desktop.py
+            QT_QPA_PLATFORM=offscreen /tmp/build-env/bin/python scripts/smoke_desktop.py
+          '
+      - name: Install build dependencies
+        if: runner.os != 'Linux'
+        run: python -m pip install -r requirements-desktop.txt
+      - name: Tests
+        if: runner.os != 'Linux'
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python -m unittest discover -s tests -v
+      - name: Build
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '13.0'
+        if: runner.os != 'Linux'
+        run: python scripts/build_desktop.py
+      - name: Smoke test packaged app
+        if: runner.os != 'Linux'
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python scripts/smoke_desktop.py
+      - name: Windows installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' packaging/windows.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Force artifacts
+          Move-Item packaging/artifacts/* artifacts/
+          $installer = (Resolve-Path artifacts/*setup.exe).Path
+          $destination = Join-Path $env:RUNNER_TEMP 'Bible installer test'
+          $process = Start-Process $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=`"$destination`"" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw 'Installation failed' }
+          $process = Start-Process "$destination/BibleSmartDisplay.exe" -ArgumentList '--smoke-test' -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw 'Installed app failed' }
+          $process = Start-Process "$destination/unins000.exe" -ArgumentList '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART' -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw 'Uninstall failed' }
+      - name: Package Unix apps
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          if [ "$RUNNER_OS" = macOS ]; then
+            mkdir -p build/dmg
+            cp -R dist/BibleSmartDisplay.app build/dmg/
+            ln -s /Applications build/dmg/Applications
+            hdiutil create -volname 'Bible Smart Display' -srcfolder build/dmg -ov -format UDZO artifacts/bibleSmartDisplay-${{ matrix.platform }}.dmg
+            hdiutil attach artifacts/bibleSmartDisplay-${{ matrix.platform }}.dmg -nobrowse -mountpoint "$RUNNER_TEMP/bible-dmg"
+            "$RUNNER_TEMP/bible-dmg/BibleSmartDisplay.app/Contents/MacOS/BibleSmartDisplay" --smoke-test
+            hdiutil detach "$RUNNER_TEMP/bible-dmg"
+          else
+            tar -czf artifacts/bibleSmartDisplay-${{ matrix.platform }}.tar.gz -C dist BibleSmartDisplay
+          fi
+      - name: Checksums
+        run: python scripts/checksums.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.platform }}
+          path: artifacts/*
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: desktop-*
+          path: release
+          merge-multiple: true
+      - name: Attach desktop downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --notes 'Desktop applications with guided setup, scheduling and English, Chinese, Spanish and French interfaces. See README for supported systems, USB setup and signing status.'
+          gh release upload "$TAG" release/* --clobber

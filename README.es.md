@@ -188,6 +188,31 @@ Incluye tu sistema operativo, modelo de pantalla, identificadores de hardware y 
 
 ---
 
+## Aplicación de escritorio: configuración guiada y bandeja
+
+**English · 简体中文 · Español · Français** — elige el idioma en Configuración. Incluye selección de modelo y puerto USB, color, brillo, traducción bíblica, vista previa sin conexión y actualizaciones diarias. Los paquetes no requieren Python.
+
+![Conectar, personalizar, probar y programar](docs/assets/desktop-setup.svg)
+
+| Sistema | Descarga |
+| :--- | :--- |
+| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
+| macOS 13+, Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
+| Linux x64 / Raspberry Pi de 64 bits | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
+
+[Descargas](https://github.com/dgcarr/bibleSmartDisplay/releases) · [Guía detallada en inglés](docs/desktop.md)
+
+1. Windows: ejecuta el instalador. Mac: arrastra la aplicación a Aplicaciones. Linux: extrae el paquete y ejecuta `./BibleSmartDisplay --install` para abrir el instalador gráfico; también puedes usar `Install.desktop` si tu escritorio lo permite.
+2. Elige el modelo exacto y el puerto USB, personaliza el aspecto y envía una imagen de prueba.
+3. Activa la actualización diaria y el inicio de sesión. Valores iniciales: 06:00 local, CSB, azul claro y brillo del 50 %.
+
+Las actualizaciones programadas continúan durante la sesión aunque cierres la aplicación. La detección de reconexión requiere que siga abierta. Antes de desinstalar, selecciona **Eliminar configuración automática**. La reparación de permisos USB en Linux muestra una solicitud gráfica de autenticación; algunos dispositivos necesitan controladores del fabricante.
+
+Los paquetes iniciales no tienen firma de editor ni notarización de Apple. Solo el modelo de 3,5 pulgadas conectado a Ubuntu tiene verificación física. Linux requiere Debian 12+, Ubuntu 24.04+ o Raspberry Pi OS Bookworm+ de 64 bits, escritorio gráfico y servicios de usuario systemd. El idioma de la interfaz y la traducción bíblica se configuran por separado.
+
+**Las instrucciones siguientes corresponden a la edición independiente de línea de comandos.** Si una versión aún no incluye paquetes de escritorio, elige otra que los incluya o sigue la guía de compilación.
+
+
 ### Créditos y licencia
 
 Basado en la documentación del protocolo de [turing-smart-screen-python](https://github.com/mathoudebine/turing-smart-screen-python), de Matthieu Houdebine y sus colaboradores. Proyecto independiente de los fabricantes. Software bajo **[GPL v3](LICENSE)**; los archivos originales conservan sus avisos.

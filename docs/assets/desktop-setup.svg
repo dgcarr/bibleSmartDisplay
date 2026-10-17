@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="230" viewBox="0 0 1100 230" role="img" aria-label="Connect, personalise, test, schedule">
+<rect width="1100" height="230" rx="22" fill="#101f35"/>
+<g font-family="sans-serif" fill="#dcecff"><text x="35" y="48" font-size="26" font-weight="bold">Bible Smart Display</text><text x="35" y="80" font-size="17">English · 简体中文 · Español · Français</text></g>
+<g fill="#1e3857"><rect x="30" y="110" width="245" height="85" rx="12"/><rect x="295" y="110" width="245" height="85" rx="12"/><rect x="560" y="110" width="245" height="85" rx="12"/><rect x="825" y="110" width="245" height="85" rx="12"/></g>
+<g font-family="sans-serif" fill="#add8e6" font-size="22"><text x="50" y="145">1 · Connect</text><text x="315" y="145">2 · Personalise</text><text x="580" y="145">3 · Test</text><text x="845" y="145">4 · Schedule</text></g>
+<g font-family="sans-serif" fill="#dcecff" font-size="15"><text x="50" y="176">Model + USB device</text><text x="315" y="176">Colour + Bible translation</text><text x="580" y="176">Check your screen</text><text x="845" y="176">Daily updates + tray</text></g></svg>

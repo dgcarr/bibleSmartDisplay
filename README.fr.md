@@ -188,6 +188,31 @@ Indiquez votre système d’exploitation, le modèle de l’écran, ses identifi
 
 ---
 
+## Application de bureau : assistant et barre des menus
+
+**English · 简体中文 · Español · Français** — choisissez la langue dans Réglages. L’application propose le choix du modèle et du port USB, la couleur, la luminosité, la traduction biblique, un aperçu hors ligne et les mises à jour quotidiennes. Les paquets incluent Python.
+
+![Brancher, personnaliser, tester et programmer](docs/assets/desktop-setup.svg)
+
+| Système | Téléchargement |
+| :--- | :--- |
+| Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |
+| macOS 13+, Intel / Apple Silicon | `bibleSmartDisplay-macos-x64.dmg` / `bibleSmartDisplay-macos-arm64.dmg` |
+| Linux x64 / Raspberry Pi 64 bits | `bibleSmartDisplay-linux-x64.tar.gz` / `bibleSmartDisplay-linux-arm64.tar.gz` |
+
+[Téléchargements](https://github.com/dgcarr/bibleSmartDisplay/releases) · [Guide détaillé en anglais](docs/desktop.md)
+
+1. Windows : lancez l’installateur. Mac : glissez l’application dans Applications. Linux : extrayez le paquet et lancez `./BibleSmartDisplay --install` pour ouvrir l’installateur graphique, ou utilisez `Install.desktop` si votre bureau le permet.
+2. Choisissez le modèle exact et le port USB, personnalisez l’affichage puis envoyez une image de test.
+3. Activez les mises à jour quotidiennes et le démarrage à la connexion. Valeurs initiales : 06:00 locale, CSB, bleu clair et luminosité à 50 %.
+
+Les mises à jour programmées continuent pendant votre session après fermeture de l’application. La détection de reconnexion nécessite qu’elle reste ouverte. Avant de désinstaller, choisissez **Supprimer la configuration automatique**. La correction des permissions USB sous Linux affiche une demande d’authentification administrateur ; certains appareils nécessitent un pilote du fabricant.
+
+Les premiers paquets ne sont ni signés par un éditeur ni notariés par Apple. Seul le modèle 3,5 pouces connecté sous Ubuntu a été vérifié physiquement. Linux nécessite Debian 12+, Ubuntu 24.04+ ou Raspberry Pi OS Bookworm+ 64 bits, un bureau graphique et les services utilisateur systemd. La langue de l’interface et la traduction biblique sont indépendantes.
+
+**Les instructions suivantes concernent l’édition en ligne de commande.** Si une version ne contient pas encore les paquets de bureau, choisissez-en une qui les contient ou suivez le guide de compilation.
+
+
 ### Remerciements et licence
 
 Réalisé à l’aide de la documentation du protocole de [turing-smart-screen-python](https://github.com/mathoudebine/turing-smart-screen-python), par Matthieu Houdebine et les contributeurs. Projet indépendant des fabricants. Logiciel sous **[GPL v3](LICENSE)** ; les fichiers provenant du projet d’origine conservent leurs mentions.
