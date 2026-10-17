@@ -63,9 +63,22 @@ CATALOG = {code: {row[0]: row[i] for row in ROWS} for i, code in enumerate(LANGU
 
 
 def system_language():
-    value = (locale.getlocale()[0] or 'en').lower().split('_')[0]
+    try:
+        from PySide6.QtCore import QLocale
+        value = QLocale.system().name().lower().split('_')[0]
+    except ImportError:
+        value = (locale.getlocale()[0] or 'en').lower().split('_')[0]
     return value if value in LANGUAGES else 'en'
 
 
 def translator(language):
     return lambda text: CATALOG.get(language, CATALOG['en']).get(text, text)
+
+
+def install_qt_translation(app, language):
+    from PySide6.QtCore import QLibraryInfo, QTranslator
+    translator_object = QTranslator(app)
+    suffix = 'zh_CN' if language == 'zh' else language
+    translator_object.load('qtbase_' + suffix, QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath))
+    app.installTranslator(translator_object)
+    return translator_object

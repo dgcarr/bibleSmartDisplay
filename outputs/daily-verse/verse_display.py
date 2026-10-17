@@ -332,7 +332,7 @@ def execute(args):
         lock.acquire(timeout=0)
     except Timeout:
         logging.info('Another instance is running; skipping this update')
-        raise RuntimeError('Another update is already running; try again shortly.')
+        return False
     try:
         cache = root / 'last-verse.json'
         if args.demo:

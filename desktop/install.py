@@ -4,7 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMessageBox
-from .i18n import system_language
+from .i18n import system_language, install_qt_translation
 
 TEXT = {
  'en': ('Install Bible Smart Display?', 'Install for this user and add an application-menu shortcut?', 'Installation complete'),
@@ -16,6 +16,7 @@ TEXT = {
 
 def install():
     app = QApplication.instance() or QApplication([])
+    qt_translation = install_qt_translation(app, system_language())
     title, question, complete = TEXT[system_language()]
     if QMessageBox.question(None, title, question) != QMessageBox.StandardButton.Yes:
         return 0

@@ -88,7 +88,18 @@ def run(root, data, mode='update'):
             args += ['--demo']
         elif mode == 'restore':
             args += ['--cached']
-    engine.main(args[1:])
+    import logging
+    try:
+        if engine.main(args[1:]) is False:
+            raise RuntimeError('Another update is already running; try again shortly.')
+    except Exception:
+        logging.exception('Desktop display operation failed')
+        raise
+    finally:
+        # The GUI is long-lived; release files between operations (especially Windows).
+        for handler in logging.getLogger().handlers[:]:
+            handler.close()
+            logging.getLogger().removeHandler(handler)
 
 
 def due(root, data, now=None):

@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
     QCheckBox, QColorDialog, QFileDialog, QMessageBox, QSystemTrayIcon, QMenu,
     QStyle, QWizard, QWizardPage)
 from . import core, scheduler
-from .i18n import LANGUAGES, translator, system_language
+from .i18n import LANGUAGES, translator, system_language, install_qt_translation
 
 
 class Worker(QThread):
@@ -382,6 +382,8 @@ class SetupWizard(QWizard):
 def start(root, tray=False, smoke=False):
     app = QApplication.instance() or QApplication(sys.argv[:1])
     app.setApplicationName('Bible Smart Display')
+    language = core.load(root).get('language', 'auto')
+    qt_translation = install_qt_translation(app, system_language() if language == 'auto' else language)
     app.setQuitOnLastWindowClosed(not QSystemTrayIcon.isSystemTrayAvailable())
     window = Window(root)
     if not tray or not QSystemTrayIcon.isSystemTrayAvailable() or not (root / 'settings.json').exists():
