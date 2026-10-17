@@ -194,6 +194,12 @@ Indiquez votre système d’exploitation, le modèle de l’écran, ses identifi
 
 ![Brancher, personnaliser, tester et programmer](docs/assets/desktop-setup.svg)
 
+<details><summary>English · 简体中文 · Español · Français</summary>
+
+![Desktop app](docs/assets/desktop-fr.png)
+
+</details>
+
 | Système | Téléchargement |
 | :--- | :--- |
 | Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |

@@ -194,6 +194,12 @@ Incluye tu sistema operativo, modelo de pantalla, identificadores de hardware y 
 
 ![Conectar, personalizar, probar y programar](docs/assets/desktop-setup.svg)
 
+<details><summary>English · 简体中文 · Español · Français</summary>
+
+![Desktop app](docs/assets/desktop-es.png)
+
+</details>
+
 | Sistema | Descarga |
 | :--- | :--- |
 | Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |

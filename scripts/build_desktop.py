@@ -26,3 +26,6 @@ if sys.platform.startswith('linux'):
     quoted = command.replace('\\', '\\\\').replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
     path.write_text('[Desktop Entry]\nType=Application\nName=Install Bible Smart Display\nExec=/bin/sh -c "' + quoted + '" sh %k\nIcon=video-display\nTerminal=false\n')
     path.chmod(0o755)
+
+if sys.platform == 'darwin':
+    subprocess.run(['codesign', '--force', '--deep', '--sign', '-', 'dist/BibleSmartDisplay.app'], check=True)

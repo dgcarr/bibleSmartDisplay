@@ -13,10 +13,10 @@ Download the matching desktop asset from [Releases](https://github.com/dgcarr/bi
 | Windows 10/11, x64 | `bibleSmartDisplay-windows-x64-setup.exe` | Run the installer; installation is per user. |
 | Mac, Intel | `bibleSmartDisplay-macos-x64.dmg` | Drag the app into Applications, then open it. |
 | Mac, Apple Silicon | `bibleSmartDisplay-macos-arm64.dmg` | Drag the app into Applications, then open it. |
-| Linux, x64 | `bibleSmartDisplay-linux-x64.tar.gz` | Extract; open `BibleSmartDisplay --install` using a terminal in the extracted folder to launch the graphical installer. |
+| Linux, x64 | `bibleSmartDisplay-linux-x64.tar.gz` | Extract; open the extracted `BibleSmartDisplay` executable to launch the graphical installer. |
 | Raspberry Pi / Linux, ARM64 | `bibleSmartDisplay-linux-arm64.tar.gz` | Same graphical installer; requires a 64-bit desktop OS. |
 
-The Linux bundle also contains `Install.desktop`; desktops that allow trusted local launchers can open it directly. Some file managers require marking the launcher executable/trusted first. The terminal fallback is `./BibleSmartDisplay --install`. No Python installation is required for any packaged download.
+If your file manager does not launch executables, run `./BibleSmartDisplay --install` from the extracted folder. The Linux bundle also contains `Install.desktop`; desktops that allow trusted local launchers can open it directly. Some file managers require marking the launcher executable/trusted first. The terminal fallback is `./BibleSmartDisplay --install`. No Python installation is required for any packaged download.
 
 Linux targets Debian 12+, Ubuntu 24.04+ and 64-bit Raspberry Pi OS Bookworm+. A graphical desktop, systemd user services and standard Qt/X11/Wayland runtime libraries are required. Minimal distributions may need `libegl1`, `libopengl0`, `libxcb-cursor0`, `libxkbcommon-x11-0` and a TrueType font installed. macOS targets version 13+. Not for iPhone/iPad, Windows ARM or 32-bit Raspberry Pi OS.
 
@@ -33,7 +33,7 @@ The initial builds are not publisher-signed or Apple-notarized. Platform securit
 
 If Linux reports permission denied, **Fix Linux USB access** opens a graphical administrator-authentication prompt. It grants access to the selected port; when USB VID/PID/serial identity is available it also installs a device-specific `uaccess` rule for future connections. Without a stable identity, access is temporary. The app never requests a password itself. If `pkexec` or `setfacl` is unavailable, the error provides a terminal fallback; install the distro's `policykit-1`/`polkit` and `acl` packages as appropriate.
 
-Windows and macOS normally provide USB CDC serial support. Devices using other USB bridges may require a manufacturer driver: see [USB driver guidance](setup.md#usb-drivers). The app does not silently install third-party drivers.
+Windows and macOS normally provide USB CDC serial support. Devices using other USB bridges may require a manufacturer driver: see [USB driver guidance](../README.md#usb-drivers). The app does not silently install third-party drivers.
 
 ## Everyday use
 

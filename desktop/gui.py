@@ -218,7 +218,7 @@ class Window(QMainWindow):
                 self.root.mkdir(parents=True, exist_ok=True)
                 QDesktopServices.openUrl(QUrl.fromLocalFile(str(self.root)))
             elif label == 'USB help':
-                QDesktopServices.openUrl(QUrl('https://github.com/dgcarr/bibleSmartDisplay/blob/main/docs/setup.md#usb-drivers'))
+                QDesktopServices.openUrl(QUrl('https://github.com/dgcarr/bibleSmartDisplay/blob/main/README.md#usb-drivers'))
             elif label == 'Fix Linux USB access':
                 data = self.settings.values()
                 port = Path(core.resolve(data)).resolve()

@@ -106,6 +106,8 @@ def due(root, data, now=None):
 def scheduled(root):
     from datetime import datetime
     root.mkdir(parents=True, exist_ok=True)
+    if not load(root)['scheduled']:
+        return
     if sys.platform.startswith('linux'):
         import subprocess
         status = subprocess.run(['loginctl', 'show-user', str(os.getuid()), '-p', 'State', '--value'], capture_output=True, text=True)
@@ -117,6 +119,9 @@ def scheduled(root):
             return
         for attempt, delay in enumerate((0, 30, 120)):
             time.sleep(delay)
+            data = load(root)
+            if not data['scheduled']:
+                return
             try:
                 run(root, data)
                 path = root / 'last-scheduled.json'

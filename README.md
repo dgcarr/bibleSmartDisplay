@@ -30,6 +30,12 @@ These displays are also sold as **“IPS secondary screens”**, including on Al
 
 ![Setup overview](docs/assets/desktop-setup.svg)
 
+<details><summary>English · 简体中文 · Español · Français</summary>
+
+![Desktop app](docs/assets/desktop-en.png)
+
+</details>
+
 | Computer | Desktop download |
 | :--- | :--- |
 | Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |

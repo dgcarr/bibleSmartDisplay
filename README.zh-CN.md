@@ -196,6 +196,12 @@ Linux/macOS 将相同参数放在 `.venv/bin/python outputs/daily-verse/verse_di
 
 ![设置步骤：连接、个性化、测试、定时更新](docs/assets/desktop-setup.svg)
 
+<details><summary>English · 简体中文 · Español · Français</summary>
+
+![Desktop app](docs/assets/desktop-zh.png)
+
+</details>
+
 | 系统 | 下载文件 |
 | :--- | :--- |
 | Windows 10/11 x64 | `bibleSmartDisplay-windows-x64-setup.exe` |

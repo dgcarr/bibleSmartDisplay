@@ -122,6 +122,9 @@ try:
     from desktop.gui import Window, SetupWizard
     QT = True
 except ImportError:
+    import importlib.util
+    if importlib.util.find_spec('PySide6') is not None:
+        raise
     QT = False
 
 
