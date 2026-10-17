@@ -6,7 +6,7 @@ import shutil
 import subprocess
 
 p = argparse.ArgumentParser()
-p.add_argument('--version', default='0.4.1')
+p.add_argument('--version', default='0.4.2')
 args = p.parse_args()
 if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', args.version):
     p.error('Version must be major.minor.patch')

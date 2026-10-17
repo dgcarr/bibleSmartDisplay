@@ -47,6 +47,7 @@ jobs:
             apt-get remove -y biblesmartdisplay
             test ! -e /opt/biblesmartdisplay/BibleSmartDisplay
             test ! -e /usr/share/applications/biblesmartdisplay.desktop
+            chown -R "$(stat -c %u:%g /src)" artifacts
           '
       - name: Install build dependencies
         if: runner.os != 'Linux'

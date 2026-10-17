@@ -190,7 +190,7 @@ Incluye tu sistema operativo, modelo de pantalla, identificadores de hardware y 
 
 ### Paquetes Debian / Ubuntu / Raspberry Pi OS
 
-Descarga `biblesmartdisplay_0.4.1_amd64.deb` para equipos Intel/AMD o `biblesmartdisplay_0.4.1_arm64.deb` para Raspberry Pi y equipos ARM de 64 bits desde [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Ábrelo con el instalador de software y ejecuta **Bible Smart Display** desde el menú de aplicaciones. El gestor instala las dependencias; Python está incluido.
+Descarga `biblesmartdisplay_0.4.2_amd64.deb` para equipos Intel/AMD o `biblesmartdisplay_0.4.2_arm64.deb` para Raspberry Pi y equipos ARM de 64 bits desde [Releases](https://github.com/dgcarr/bibleSmartDisplay/releases/latest). Ábrelo con el instalador de software y ejecuta **Bible Smart Display** desde el menú de aplicaciones. El gestor instala las dependencias; Python está incluido.
 
 Antes de desinstalar, selecciona **Eliminar configuración automática** y cierra la aplicación. Se conservan las preferencias y el versículo guardado. [Comandos de instalación y eliminación, en inglés](docs/desktop.md#debian-packages).
 

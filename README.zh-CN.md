@@ -192,7 +192,7 @@ Linux/macOS 将相同参数放在 `.venv/bin/python outputs/daily-verse/verse_di
 
 ### Debian / Ubuntu / Raspberry Pi OS 安装包
 
-从[发行版页面](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)下载 `biblesmartdisplay_0.4.1_amd64.deb`（Intel/AMD 电脑）或 `biblesmartdisplay_0.4.1_arm64.deb`（64 位树莓派和 ARM 电脑）。使用软件安装程序打开，然后从应用菜单启动 **Bible Smart Display**。包管理器会安装依赖，Python 已包含在内。
+从[发行版页面](https://github.com/dgcarr/bibleSmartDisplay/releases/latest)下载 `biblesmartdisplay_0.4.2_amd64.deb`（Intel/AMD 电脑）或 `biblesmartdisplay_0.4.2_arm64.deb`（64 位树莓派和 ARM 电脑）。使用软件安装程序打开，然后从应用菜单启动 **Bible Smart Display**。包管理器会安装依赖，Python 已包含在内。
 
 卸载前，在设置中选择“移除自动设置”并退出应用。卸载软件包会保留用户设置和已保存经文。[安装和卸载命令（英文）](docs/desktop.md#debian-packages)。
 
