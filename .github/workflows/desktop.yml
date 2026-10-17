@@ -58,6 +58,9 @@ jobs:
         env:
           QT_QPA_PLATFORM: offscreen
         run: python scripts/smoke_desktop.py
+      - name: Verify Windows task registration and removal
+        if: runner.os == 'Windows'
+        run: python scripts/verify_windows_tasks.py
       - name: Windows installer
         if: runner.os == 'Windows'
         shell: pwsh
