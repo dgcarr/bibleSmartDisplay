@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="Bible Smart Display — A daily verse. A quiet moment." width="100%">
+<img src="docs/assets/banner-v2.svg" alt="Bible Smart Display — A daily verse. A quiet moment." width="100%">
 
 # Bible Smart Display
 
