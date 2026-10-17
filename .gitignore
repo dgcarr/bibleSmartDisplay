@@ -7,3 +7,7 @@ __pycache__/
 .env.*
 outputs/daily-verse/last-verse.json
 outputs/daily-verse/preview.png
+.venv/
+build/
+dist/
+*.spec

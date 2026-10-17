@@ -1,0 +1,65 @@
+name: Windows executable
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt "pyinstaller>=6,<7"
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Build executable
+        run: python -m PyInstaller --noconfirm --clean --onefile --name bibleSmartDisplay outputs/daily-verse/verse_display.py
+      - name: Test packaged executable
+        shell: pwsh
+        run: |
+          & ./dist/bibleSmartDisplay.exe --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./dist/bibleSmartDisplay.exe --list-ports
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./dist/bibleSmartDisplay.exe --demo --preview-only --data-dir ./build/smoke-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (!(Test-Path ./build/smoke-test/preview.png)) { throw 'Preview was not produced' }
+      - name: Include dependency licence notices
+        run: python scripts/collect_licenses.py
+      - name: Package download
+        shell: pwsh
+        run: |
+          Copy-Item README.md, LICENSE, COPYING dist/
+          Set-Content dist/Run-display.cmd '@echo off', 'cd /d "%~dp0"', 'bibleSmartDisplay.exe', 'pause'
+          Compress-Archive -Path dist/* -DestinationPath bibleSmartDisplay-windows-x64.zip
+          (Get-FileHash bibleSmartDisplay-windows-x64.zip -Algorithm SHA256).Hash.ToLower() + '  bibleSmartDisplay-windows-x64.zip' | Set-Content SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bibleSmartDisplay-windows-x64
+          path: |
+            bibleSmartDisplay-windows-x64.zip
+            SHA256SUMS.txt
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bibleSmartDisplay-windows-x64
+          path: release
+      - name: Publish Windows download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" release/* --title "$RELEASE_TAG" --notes "Windows x64 portable executable. Extract the ZIP and run Run-display.cmd. See README for USB drivers, supported 3.5-inch Revision A hardware, and Linux/macOS source installation. Windows automated preview tests pass; physical Windows USB testing is still needed."
