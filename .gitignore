@@ -11,3 +11,5 @@ outputs/daily-verse/preview.png
 build/
 dist/
 *.spec
+
+artifacts/
